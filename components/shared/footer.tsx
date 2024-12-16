@@ -1,5 +1,4 @@
-import { Disclosure } from "@headlessui/react";
-import { Link } from "lucide-react";
+
 
 export default function Footer() {
 	return (
