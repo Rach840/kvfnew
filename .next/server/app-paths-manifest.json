@@ -1,0 +1,16 @@
+{
+  "/api/export-users/route": "app/api/export-users/route.js",
+  "/api/upload-test-image/[testId]/route": "app/api/upload-test-image/[testId]/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/create-test/page": "app/create-test/page.js",
+  "/create-test/[test]/page": "app/create-test/[test]/page.js",
+  "/error-auth/page": "app/error-auth/page.js",
+  "/login/page": "app/login/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/register/page": "app/register/page.js",
+  "/test/[test]/page": "app/test/[test]/page.js",
+  "/test/page": "app/test/page.js",
+  "/users/page": "app/users/page.js"
+}
