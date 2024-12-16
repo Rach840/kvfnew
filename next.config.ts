@@ -7,19 +7,22 @@ const nextConfig: NextConfig = {
   /* config options here */
 };
 module.exports = {
-  webpack: (config, options) => {
+  reactStrictMode: true,
+  webpack(config, options) {
     config.module.rules.push({
-      test: /\.mdx/,
+      test: /\.svg$/i,
+      issuer: { and: [/\.(ts)x?$/] },
       use: [
-        options.defaultLoaders.babel,
         {
-          loader: '@mdx-js/loader',
-          options: pluginOptions.options,
+          loader: "@svgr/webpack",
+          options: {
+            svgoConfig: { plugins: [{ removeViewBox: false }] },
+          },
         },
       ],
-    })
+    });
 
-    return config
-  },
+    return config;
+  }
 }
 export default nextConfig;
