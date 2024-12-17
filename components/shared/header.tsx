@@ -60,21 +60,6 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                   <div className="ml-10 flex items-baseline space-x-4">
                     {status == "loading"
                       ? userNavigation?.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href.includes("home") ? "/" : item.href}
-                          className={cn(
-                            "rounded-md px-3 py-3 text-lg font-medium duration-300",
-                            adjustedPathName.includes(item.href)
-                              ? "bg-slate-300 text-zinc-950"
-                              : "text-zinc-950 hover:bg-slate-300 hover:text-white"
-                          )}
-                        >
-                          {item.name}
-                        </Link>
-                      ))
-                      : session?.user.role == "ADMIN"
-                        ? adminNavigation?.map((item) => (
                           <Link
                             key={item.name}
                             href={item.href.includes("home") ? "/" : item.href}
@@ -88,7 +73,22 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                             {item.name}
                           </Link>
                         ))
-                        : userNavigation?.map((item) => (
+                      : session?.user.role == "ADMIN"
+                      ? adminNavigation?.map((item) => (
+                          <Link
+                            key={item.name}
+                            href={item.href.includes("home") ? "/" : item.href}
+                            className={cn(
+                              "rounded-md px-3 py-3 text-lg font-medium duration-300",
+                              adjustedPathName.includes(item.href)
+                                ? "bg-slate-300 text-zinc-950"
+                                : "text-zinc-950 hover:bg-slate-300 hover:text-white"
+                            )}
+                          >
+                            {item.name}
+                          </Link>
+                        ))
+                      : userNavigation?.map((item) => (
                           <Link
                             key={item.name}
                             href={item.href.includes("home") ? "/" : item.href}
@@ -135,9 +135,8 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                 </div>
               </div>
               <div className="-mr-2 flex md:hidden">
-                <DisclosureButton className="group relative p-7 inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                  <span className="absolute " />
-                  <span className="sr-only">Открыть меню</span>
+                <DisclosureButton className="group relative p-7 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <img src=".././free-icon-menu.png" alt="" />
                 </DisclosureButton>
               </div>
             </div>
@@ -148,21 +147,6 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
               <div className=" items-baseline space-y-4">
                 {status == "loading"
                   ? userNavigation?.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href.includes("home") ? "/" : item.href}
-                      className={cn(
-                        "rounded-md block px-3 py-3 text-lg font-medium duration-300",
-                        adjustedPathName.includes(item.href)
-                          ? "bg-slate-300 text-zinc-950"
-                          : "text-zinc-950 hover:bg-slate-300 hover:text-white"
-                      )}
-                    >
-                      {item.name}
-                    </Link>
-                  ))
-                  : session?.user.role == "ADMIN"
-                    ? adminNavigation?.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href.includes("home") ? "/" : item.href}
@@ -176,7 +160,22 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                         {item.name}
                       </Link>
                     ))
-                    : userNavigation?.map((item) => (
+                  : session?.user.role == "ADMIN"
+                  ? adminNavigation?.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href.includes("home") ? "/" : item.href}
+                        className={cn(
+                          "rounded-md block px-3 py-3 text-lg font-medium duration-300",
+                          adjustedPathName.includes(item.href)
+                            ? "bg-slate-300 text-zinc-950"
+                            : "text-zinc-950 hover:bg-slate-300 hover:text-white"
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    ))
+                  : userNavigation?.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href.includes("home") ? "/" : item.href}
@@ -193,10 +192,7 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
               </div>
             </div>
             <div className="border-t border-gray-700 pb-3 pt-4">
-              <div className="flex items-center px-5">
-
-
-              </div>
+              <div className="flex items-center px-5"></div>
               {status == "authenticated" ? (
                 <>
                   <div className="shrink-0">
@@ -226,7 +222,6 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                     </DisclosureButton>
                   </div>
                 </>
-
               ) : (
                 <div className="flex items-center justify-around">
                   <Button
@@ -245,7 +240,6 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                   </Button>
                 </div>
               )}
-
             </div>
           </DisclosurePanel>
         </Disclosure>
