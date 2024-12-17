@@ -48,7 +48,7 @@ export default async function Home() {
                 )}
               </div>
             </div>
-            <img src="./fullScreenImg.png" className="size-5/12" alt="" />
+            <img src="./fullscreenImg.png" className="size-5/12" alt="" />
           </div>
         </div>
       </main>
