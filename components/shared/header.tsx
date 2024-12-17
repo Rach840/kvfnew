@@ -135,8 +135,12 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                 </div>
               </div>
               <div className="-mr-2 flex md:hidden">
-                <DisclosureButton className="group size-10 relative p-7 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                  <img src=".././free-icon-menu.png" alt="" />
+                <DisclosureButton className="group size-14 relative  inline-flex items-center justify-center rounded-md  text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <img
+                    className="h-full"
+                    src=".././free-icon-menu.png"
+                    alt=""
+                  />
                 </DisclosureButton>
               </div>
             </div>
