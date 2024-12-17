@@ -7,13 +7,13 @@ export default async function Home() {
   return (
     <div style={{ top: '-38px' }} className=" relative overflow-y-hidden">
       <main
-        style={{ backgroundColor: "#FFF5CC", height: "100vh" }}
-        className="  text-zinc-950"
+        style={{ backgroundColor: "#FFF5CC", }}
+        className=" h-screen text-zinc-950"
       >
-        <div className=" relative ">
+        <div className=" relative flex items-center h-full ">
 
-          <div className="mx-auto w-8/12  flex py-32  justify-between items-center  ">
-            <div className="text-center w-2/4 ">
+          <div className="mx-auto  w-8/12  flex py-10 lg:py-20 flex-col-reverse  xl:py-32 xl:flex-row   justify-between items-center  ">
+            <div className="text-center w-full xl:w-2/4 ">
               <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
                 Клуб веселых финансистов
               </h1>

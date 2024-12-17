@@ -13,6 +13,7 @@ import { getUserSession } from "@/lib/get-session-server";
 
 import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Alert } from "@mui/material";
 
 interface Question {
   question: string;
@@ -295,7 +296,7 @@ export default function TestPage() {
 
     return (
       <>
-        <div className="relative w-8/12 container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)] p-4">
+        <div className="relative w-full lg:w-8/12 container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)] p-4">
           <h2 className="text-3xl font-bold mb-4 text-center">Поздравляем!</h2>
           <CircularProgress
             className="mx-auto my-6"
@@ -315,20 +316,16 @@ export default function TestPage() {
       <div className="container mx-auto p-4">
         <h1 className="text-3xl font-bold mb-4 text-center">{testName} </h1>
         {noAnswerGlobal != -1 ? (
-          <div
-            key={questionsCurrentIndex}
-            className="relative w-8/12 container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)] p-4"
-          >
-            Вы полностью не заполнили ответы{" "}
-            <button onClick={goToNoAnswer}>Перейти к не заполненым</button>
-          </div>
+
+          <Alert severity="error">Вы полностью не заполнили ответы!.</Alert>
+
         ) : (
           <></>
         )}
 
         <div
           key={questionsCurrentIndex}
-          className="relative w-8/12 bg-white container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)] p-4"
+          className="relative w-full lg:w-8/12 bg-white container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)] p-4"
         >
           <h2 className="text-xl font-semibold mb-2">
             Вопрос {questionsCurrentIndex + 1}:{" "}
@@ -370,7 +367,7 @@ export default function TestPage() {
           </RadioGroup>
         </div>
 
-        <div className="flex items-center justify-center">
+        <div className="flex flex-wrap items-center justify-center">
           <Button onClick={prevQuestion} className=" mt-4">
             Предыдущий вопрос
           </Button>

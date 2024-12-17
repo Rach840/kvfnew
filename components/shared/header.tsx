@@ -9,7 +9,7 @@ import {
 import React, { PropsWithChildren } from "react";
 
 import { LoaderCircle } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import HeaderLogin from "./header-login";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -135,8 +135,8 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                 </div>
               </div>
               <div className="-mr-2 flex md:hidden">
-                <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                  <span className="absolute -inset-0.5" />
+                <DisclosureButton className="group relative p-7 inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <span className="absolute " />
                   <span className="sr-only">Открыть меню</span>
                 </DisclosureButton>
               </div>
@@ -145,43 +145,107 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
 
           <DisclosurePanel className="md:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-              <DisclosureButton
-                key="Ваш профиль"
-                as="a"
-                href="#"
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-              >
-                Ваш профиль
-              </DisclosureButton>
+              <div className=" items-baseline space-y-4">
+                {status == "loading"
+                  ? userNavigation?.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href.includes("home") ? "/" : item.href}
+                      className={cn(
+                        "rounded-md block px-3 py-3 text-lg font-medium duration-300",
+                        adjustedPathName.includes(item.href)
+                          ? "bg-slate-300 text-zinc-950"
+                          : "text-zinc-950 hover:bg-slate-300 hover:text-white"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))
+                  : session?.user.role == "ADMIN"
+                    ? adminNavigation?.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href.includes("home") ? "/" : item.href}
+                        className={cn(
+                          "rounded-md block px-3 py-3 text-lg font-medium duration-300",
+                          adjustedPathName.includes(item.href)
+                            ? "bg-slate-300 text-zinc-950"
+                            : "text-zinc-950 hover:bg-slate-300 hover:text-white"
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    ))
+                    : userNavigation?.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href.includes("home") ? "/" : item.href}
+                        className={cn(
+                          "rounded-md px-3 mx-0 block py-3 text-lg font-medium duration-300",
+                          adjustedPathName.includes(item.href)
+                            ? "bg-slate-300 text-zinc-950"
+                            : "text-zinc-950 hover:bg-slate-300 hover:text-white"
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+              </div>
             </div>
             <div className="border-t border-gray-700 pb-3 pt-4">
               <div className="flex items-center px-5">
-                <div className="shrink-0">
-                  <img
-                    alt=""
-                    src={user.imageUrl}
-                    className="size-10 rounded-full"
-                  />
-                </div>
-                <div className="ml-3">
-                  <div className="text-base/5 font-medium text-white">
-                    {/* {user.name} */}
-                  </div>
-                  <div className="text-sm font-medium text-gray-400">
-                    {/* {user.email} */}
-                  </div>
-                </div>
+
+
               </div>
-              <div className="mt-3 space-y-1 px-2">
-                <DisclosureButton
-                  key="Ваш профиль"
-                  as="a"
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                >
-                  Ваш профиль
-                </DisclosureButton>
-              </div>
+              {status == "authenticated" ? (
+                <>
+                  <div className="shrink-0">
+                    <img
+                      alt=""
+                      src={user.imageUrl}
+                      className="size-14 rounded-full"
+                    />
+                  </div>
+                  <div className="mt-3 space-y-1 px-2">
+                    <DisclosureButton
+                      key="Ваш профиль"
+                      as="a"
+                      href="/profile"
+                      className="block px-4 py-2 text-xl text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                    >
+                      Ваш профиль
+                    </DisclosureButton>
+                    <DisclosureButton
+                      onClick={() => {
+                        router.push("../");
+                        signOut();
+                      }}
+                      className="block px-4 py-2 text-xl text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                    >
+                      Выйти
+                    </DisclosureButton>
+                  </div>
+                </>
+
+              ) : (
+                <div className="flex items-center justify-around">
+                  <Button
+                    key="Войти"
+                    onClick={() => router.replace("/login")}
+                    className="text-zinc-950 hover:bg-slate-300 hover:text-white rounded-md px-3 py-3 text-lg font-medium duration-300 mr-3"
+                  >
+                    Войти
+                  </Button>
+                  <Button
+                    key="Регистрация"
+                    onClick={() => router.replace("/register")}
+                    className="text-zinc-950 hover:bg-slate-300 hover:text-white rounded-md px-3 py-3 text-lg font-medium duration-300"
+                  >
+                    Регистрация
+                  </Button>
+                </div>
+              )}
+
             </div>
           </DisclosurePanel>
         </Disclosure>

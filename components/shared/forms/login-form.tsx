@@ -44,7 +44,7 @@ export const LoginForm: React.FC<Props> = ({ }) => {
   return (
     <FormProvider  {...form}>
       <form
-        className=" bg-white container  mx-auto w-2/5 border-x-2 border-y-2 rounded-lg my-10 py-10 px-10 mx-auto  border-gray-900/10 pb-12  "
+        className=" bg-white container w-full mx-auto lg:w-2/5 border-x-2 border-y-2 rounded-lg my-10 py-10 px-10 mx-auto  border-gray-900/10 pb-12  "
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <h2 className=" text-3xl font-semibold text-gray-900">Авторизация</h2>

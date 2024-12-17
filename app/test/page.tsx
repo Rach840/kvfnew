@@ -82,7 +82,7 @@ export default function Test() {
     return (
 
       <div className="container mx-auto py-10">
-        <div className="relative bg-white w-7/12 container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] -top-10 py-5  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
+        <div className="relative w-11/12 lg:w-7/12  bg-white container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] -top-10 py-5  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
           <div className="px-8 pt-3 sm:px-3 sm:pt-3">
             <h4 className="mt-2 text-2xl text-center font-medium tracking-tight text-gray-950 max-lg:text-center">
               Перед началом прохождения тестов ознакомьтесь с инструкциями
@@ -103,7 +103,7 @@ export default function Test() {
           Ваши тесты
         </h3>
         {user.testPassed && testCatName.nameTranslit != 'trenirovochnyy-test' ? (
-          <div key={keyDis++} className="opacity-75 justify-between bg-white rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-t-[2rem] my-3 flex py-5 px-5 text-xl">
+          <div key={keyDis++} className="opacity-75 items-center justify-between bg-white rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-t-[2rem] my-3 flex py-5 px-5 text-xl">
             {testCatName.name}
 
             <Link
@@ -115,7 +115,7 @@ export default function Test() {
             </Link>
           </div>
         ) : (
-          <div key={keyDis++} className=" justify-between bg-white rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-t-[2rem] my-3 flex py-5 px-5 text-xl">
+          <div key={keyDis++} className=" items-center justify-between bg-white rounded-lg shadow ring-1 ring-black/5 max-lg:rounded-t-[2rem] my-3 flex py-5 px-5 text-xl">
             {testCatName.name}
             <Link
               className="  duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
@@ -161,7 +161,7 @@ export default function Test() {
   } else if (isLoading) {
     return (
       <Box sx={{ margin: '20px auto', width: "80%" }}>
-        <div className="relative bg-white w-7/12 container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] -top-10 py-5  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
+        <div className="relative bg-white w-11/12 lg:w-7/12 container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] -top-10 py-5  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
           <div className="px-8 pt-3 sm:px-3 sm:pt-3">
             <h4 className="mt-2 text-2xl text-center font-medium tracking-tight text-gray-950 max-lg:text-center">
               Перед началом прохождения тестов ознакомьтесь с инструкциями

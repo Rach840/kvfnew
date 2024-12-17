@@ -81,8 +81,8 @@ export const RegisterForm: React.FC = ({ }) => {
             <p className="mt-1 text-sm/6 text-gray-600">
               Зарегистрируетесь для доступа к тестам
             </p>
-            <div className="flex">
-              <div className="mt-10 w-9/12 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="flex flex-col-reverse justify-center lg:flex-row">
+              <div className="mt-10 w-full lg:w-9/12 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="first-name"
