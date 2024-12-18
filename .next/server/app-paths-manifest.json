@@ -1,17 +1,17 @@
 {
-  "/api/export-users/route": "app/api/export-users/route.js",
   "/api/upload-test-image/[testId]/route": "app/api/upload-test-image/[testId]/route.js",
+  "/api/export-users/route": "app/api/export-users/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/create-test/[test]/page": "app/create-test/[test]/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/create-test/page": "app/create-test/page.js",
+  "/error-auth/page": "app/error-auth/page.js",
+  "/create-test/[test]/page": "app/create-test/[test]/page.js",
   "/login/page": "app/login/page.js",
   "/page": "app/page.js",
-  "/error-auth/page": "app/error-auth/page.js",
-  "/register/page": "app/register/page.js",
-  "/create-test/page": "app/create-test/page.js",
   "/profile/page": "app/profile/page.js",
+  "/register/page": "app/register/page.js",
+  "/test/[test]/page": "app/test/[test]/page.js",
   "/test/page": "app/test/page.js",
-  "/users/page": "app/users/page.js",
-  "/test/[test]/page": "app/test/[test]/page.js"
+  "/users/page": "app/users/page.js"
 }
