@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
 
-  output: "export",
   images: {
     unoptimized: true,
   },
