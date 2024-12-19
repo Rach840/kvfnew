@@ -9,8 +9,9 @@ WORKDIR /usr/src
 COPY . /usr/src
 
 COPY package*.json ./
-COPY prisma ./prisma/
 COPY .next ./
+COPY prisma ./prisma/
+
 
 RUN apt-get -qy update && apt-get -qy install openssl
 
