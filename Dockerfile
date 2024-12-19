@@ -10,6 +10,7 @@ COPY . /usr/src
 
 COPY package*.json ./
 COPY prisma ./prisma/
+COPY .next ./
 
 RUN apt-get -qy update && apt-get -qy install openssl
 
@@ -21,6 +22,6 @@ RUN npm install @prisma/client
 COPY . .
 RUN npx prisma generate --schema ./prisma/schema.prisma
 # start app
-RUN next build
+RUN npm run build
 EXPOSE 3000
 CMD npm run start
