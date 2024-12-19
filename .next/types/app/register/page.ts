@@ -1,4 +1,4 @@
-// File: C:\Users\rachb\Downloads\Telegram Desktop\kvfNew\app\register\page.tsx
+// File: C:\Users\Student\Downloads\kvfNew\kvfNew\app\register\page.tsx
 import * as entry from '../../../../app/register/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

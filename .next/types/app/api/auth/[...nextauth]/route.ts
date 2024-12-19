@@ -1,4 +1,4 @@
-// File: C:\Users\rachb\Downloads\Telegram Desktop\kvfNew\app\api\auth\[...nextauth]\route.ts
+// File: C:\Users\Student\Downloads\kvfNew\kvfNew\app\api\auth\[...nextauth]\route.ts
 import * as entry from '../../../../../../app/api/auth/[...nextauth]/route.js'
 import type { NextRequest } from 'next/server.js'
 
