@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3010",
+    "dev": " npx prisma generate && next dev",
     "build": "next build",
-    "start": "next start --port 3010",
+    "start": "npx prisma migrate deploy && next start ",
     "lint": "next lint"
   },
   "dependencies": {
