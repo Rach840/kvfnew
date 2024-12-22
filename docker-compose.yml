@@ -1,0 +1,15 @@
+services:
+  # приложение Next.js
+  web:
+    # сборка на основе Dockerfile
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - DATABASE_URL=mysql://rizo9235_rach3000:qwerty228337!@37.27.63.3:3306/rizo9235_kvf_tasks
+      - NODE_ENV=development
+      - NEXTAUTH_SECRET=Ov23lilHvIs9YfXbr8Am
+      - AWS_ACCESS_KEY_ID=YCAJEyh-o4mLyiDs4JwVFsphF
+      - AWS_SECRET_ACCESS_KEY=YCPKZiDTXj6VJ6NSkoQ8fKRN4gAlDj5FVbhUx7k1
+    # приложение зависит от БД
+
