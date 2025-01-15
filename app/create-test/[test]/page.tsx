@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { saveCompletedTest, getTextById, Users } from "@/app/actions";
 import { InputImage } from "@/components/shared/input-image";
 

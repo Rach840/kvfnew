@@ -18,19 +18,10 @@ interface Props {
 export const LoginForm: React.FC<Props> = ({ variant }) => {
   const router = useRouter();
   const [isInvalid, setIsInvalid] = useState(false);
-  const form = variant == 'email' ? useForm<TFormLoginEmailValues>({
-    resolver: zodResolver(loginEmailSchema),
-    defaultValues: {
-      email: ""
-    },
-  }) : useForm<TFormLoginValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+  const form = useForm<TFormLoginValues | TFormLoginEmailValues>({
+    resolver: zodResolver(variant === 'email' ? loginEmailSchema : loginSchema),
+    defaultValues: variant === 'email' ? { email: "" } : { email: "", password: "" },
   });
-  console.log(form)
   const onSubmit = async (data: TFormLoginValues | TFormLoginEmailValues) => {
     try {
       const email = data.email;

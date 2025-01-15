@@ -17,7 +17,6 @@ import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Alert } from "@mui/material";
 import Link from "next/link";
-import { JsonValue } from "@prisma/client/runtime/library";
 import NonAuth from "@/components/shared/non-auth";
 
 interface Question {
