@@ -40,7 +40,7 @@ export const InputImage = (props: {
           display: showError ? "block" : "none",
         }}
       >
-        Размер файла больше чем пашел нахуй
+        Размер файла больше допустимого
       </span>
     </>
   );

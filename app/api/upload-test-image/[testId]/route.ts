@@ -17,13 +17,13 @@ export async function POST(
 
   await s3.send(
     new PutObjectCommand({
-      Bucket: "schedule-bucket",
+      Bucket: "kvf",
       Key,
       Body,
     })
   );
 
-  const url = `https://schedule-bucket.storage.yandexcloud.net/${Key}`;
+  const url = `https://kvf.storage.yandexcloud.net/${Key}`;
 
   return NextResponse.json({ url });
 }

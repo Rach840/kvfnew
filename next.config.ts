@@ -2,9 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
-
+  env: {
+    BASE_URL: process.env.BASE_URL,
+  },
   images: {
     unoptimized: true,
   },

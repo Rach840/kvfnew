@@ -4,8 +4,9 @@ import { prisma } from "@/prisma/prisma-client";
 import { hashSync } from "bcryptjs";
 
 import { Prisma } from "@prisma/client";
-
+// import { v4 as uuidv4 } from "uuid";
 import { Question } from "./create-test/[test]/page";
+import { JsonValue } from "@prisma/client/runtime/library";
 
 
 export async function registerUser(
@@ -35,6 +36,9 @@ export async function registerUser(
           testsResult: "[]",
         },
       });
+
+
+
       return { success: !!createdUser };
     }
   } catch (err) {
@@ -72,7 +76,7 @@ type ProfileEdited = {
   edit: boolean;
 };
 
-type Users = {
+export type Users = {
   id: number;
   firstName: string;
   lastName: string;
@@ -83,9 +87,15 @@ type Users = {
   testPassed: boolean;
   startTest: string;
   passedDate: string;
-  testsResult: number;
+  testsResult: string;
+  okAnswers: number;
+  emailVerified: Date | null;
 };
-
+export type UserTests = {
+  testName: string;
+  score: number;
+  passedDate: string
+}
 export async function getAllUsers(): Promise<Users[]> {
   try {
     const users = await prisma.user.findMany({
@@ -116,8 +126,8 @@ export async function getAllUsers(): Promise<Users[]> {
   }
 }
 
-function translit(word) {
-  const converter = {
+function translit(word: string) {
+  const converter: { [key: string]: string } = {
     'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
     'е': 'e', 'ё': 'e', 'ж': 'zh', 'з': 'z', 'и': 'i',
     'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
@@ -143,6 +153,11 @@ function translit(word) {
   answer = answer.replace(/^\-|-$/g, '');
   return answer;
 }
+
+
+
+
+
 export async function createTest(body: Prisma.TestCreateInput) {
   try {
     const test = await prisma.test.create({
@@ -160,12 +175,14 @@ export async function createTest(body: Prisma.TestCreateInput) {
 }
 
 export type Tests = {
-  id?: number;
+  id: number;
   category: string;
   name: string;
-  text?: string;
+  nameTranslit: string;
+  testDisable: boolean;
+  text?: JsonValue;
 };
-export async function getTests(): Promise<Tests[]> {
+export async function getTests(): Promise<Tests[] | undefined> {
   try {
     const tests = await prisma.test.findMany({
       select: {
@@ -224,7 +241,7 @@ export async function testBlocked(id: number) {
 
 }
 
-export async function getTest(id: number) {
+export async function getTest(id: number): Promise<Tests | null> {
   try {
     const test = await prisma.test.findUnique({
       where: {
@@ -235,7 +252,7 @@ export async function getTest(id: number) {
   } catch (err) {
     console.log(err)
 
-    return [];
+    return null;
   }
 }
 

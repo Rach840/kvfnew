@@ -17,13 +17,16 @@ export const loginSchema = z.object({
       message: "Пароль должен содержать хотя бы одну цифру",
     }),
 });
-
+export const loginEmailSchema = z.object({
+  email: z.string().email({ message: "Введите корректную почту" }),
+});
 export const CreateQuestionSchema = z.object({
   name: z.string(),
 });
 
 export const CreateTestSchema = z.object({
   name: z.string(),
+  nameTranslit: z.string(),
   category: z.string(),
   text: z.string(),
 });
@@ -63,4 +66,5 @@ export const RegisterSchema = z.object({
 export type TCreateQuestionValues = z.infer<typeof CreateQuestionSchema>;
 export type TCreateTestValues = z.infer<typeof CreateTestSchema>;
 export type TFormLoginValues = z.infer<typeof loginSchema>;
+export type TFormLoginEmailValues = z.infer<typeof loginEmailSchema>;
 export type TFormRegisterValues = z.infer<typeof RegisterSchema>;

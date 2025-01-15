@@ -1,17 +1,18 @@
 
 "use client";
 
-import React from "react"; // Corrected import statement
-import { getAllUsers } from "../actions";
+import React from "react";
+import { getAllUsers, Users } from "../actions";
 import { getUserSession } from "@/lib/get-session-server";
 import ExportButton from "@/components/shared/export-button";
+import NotFound from "../not-found";
 
-export default function Users() {
-  const [users, setUsers] = React.useState([]);
-  const [_users, _setUsers] = React.useState([]);
-  const [emptyUser, setEmptyUser] = React.useState(false);
+export default function UsersDashboard() {
+  const [users, setUsers] = React.useState<Users[]>([]);
+  const [_users, _setUsers] = React.useState<Users[]>([]);
+  const [emptyUser, setEmptyUser] = React.useState<boolean>(false);
 
-  const [session, setSession] = React.useState(null);
+  const [session, setSession] = React.useState<Users | null>(null);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -35,12 +36,19 @@ export default function Users() {
       _setUsers(usersTime);
 
       setUsers(usersData);
-      setSession(sessionData);
+      if (sessionData) {
+        setSession(sessionData);
+      } else {
+        setSession(null);
+      }
+
     }
 
     fetchData();
   }, []);
+
   function convertToTimestamp(dateString: string) {
+    console.log(dateString)
     const [datePart, timePart] = dateString.split(", ");
 
     const [day, month, year] = datePart.split(".").map(Number);
@@ -54,15 +62,17 @@ export default function Users() {
     // Return the timestamp
     return date.getTime();
   }
-
   console.log(users);
+  console.log(_users);
   const handleRowClick = () => {
     setEmptyUser(false);
-    const from = document.querySelector("#from").value;
-    const to = document.querySelector("#to").value;
+    const fromElement = document.querySelector("#from") as HTMLInputElement | null;
+    const toElement = document.querySelector("#to") as HTMLInputElement | null;
+    const from = fromElement?.value || ""; // Provide a default empty string
+    const to = toElement?.value || "";
     const filteredUsers = _users.filter((user) => {
-      const startDate = new Date(from).getTime();
-      const endDate = new Date(to).getTime();
+      const startDate = from ? new Date(from).getTime() : NaN;
+      const endDate = to ? new Date(to).getTime() : NaN;
 
       const passedDate = convertToTimestamp(user.passedDate);
       if (isNaN(endDate)) {
@@ -81,7 +91,8 @@ export default function Users() {
   };
   function searchUsers() {
     setEmptyUser(false);
-    const searchValue = document.querySelector("#search").value;
+    const searchElement = document.querySelector("#search") as HTMLInputElement | null;
+    const searchValue = searchElement?.value || '';
     const searched = users.filter(
       (item) =>
         item.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -96,7 +107,8 @@ export default function Users() {
 
   function categorysTest() {
     setEmptyUser(false);
-    const categoryValue = document.querySelector("#categorysTest").value;
+    const categoryElement = document.querySelector("#categorysTest") as HTMLInputElement | null;
+    const categoryValue = categoryElement?.value;
     const searched = _users.filter((item) => item.startTest == categoryValue);
     if (searched.length == 0) {
       setEmptyUser(true);
@@ -106,9 +118,13 @@ export default function Users() {
   }
   function resetFilters() {
     setEmptyUser(false);
-    document.querySelector("#from").value = "";
-    document.querySelector("#to").value = "";
-    document.querySelector("#search").value = "";
+    const fromElement = document.querySelector("#from") as HTMLInputElement;
+    const toElement = document.querySelector("#to") as HTMLInputElement;
+    fromElement.value = ''; // Provide a default empty string
+    toElement.value = "";
+    const searchElement = document.querySelector("#search") as HTMLInputElement;
+    searchElement.value = '';
+
     return setUsers(_users);
   }
 
@@ -273,12 +289,6 @@ export default function Users() {
       </div>
     </div>
   ) : (
-    <div className="relative bg-white container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10 shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
-      <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-        <h4 className="mt-2 text-4xl text-center font-medium tracking-tight text-gray-950 max-lg:text-center">
-          Ошибка, данной страницы не существует
-        </h4>
-      </div>
-    </div>
+    <NotFound />
   );
 }

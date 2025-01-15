@@ -1,18 +1,27 @@
 "use client";
 import { getUserSession } from "@/lib/get-session-server";
-import React, { useState } from "react";
-import { getTests } from "../actions";
+import React, { use, useState } from "react";
+import { getTests, Tests, Users } from "../actions";
 import Link from "next/link";
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
+import NonAuth from "@/components/shared/non-auth";
+import { useRouter } from "next/navigation";
 export default function Test() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<Users>();
   const [isLoading, setIsLoading] = React.useState(true);
   const [userTestsName, setUserTestsName] = React.useState();
+  const router = useRouter();
   React.useEffect(() => {
     (async () => {
       const user = await getUserSession();
-      setUser(user);
+      if (user && !user?.emailVerified) {
+        router.replace("/verification-request")
+      }
+      if (user != null) {
+        setUser(user);
+      }
+
       setIsLoading(true)
       if (user) {
 
@@ -36,15 +45,16 @@ export default function Test() {
   console.log(userTestsName)
   console.log(isLoading)
   const [testNoCatName, setTestNoCatName] = React.useState([]);
-  const [testCatName, setTestCatName] = React.useState([]);
+  const [testCatName, setTestCatName] = React.useState<Tests[] | undefined>([]);
 
 
   const fetchTestName = async (role: string, startTest: string) => {
     try {
+
       const testDetails = await getTests();
 
 
-      if (testDetails.length > 0) {
+      if (testDetails != undefined && testDetails.length > 0) {
         const getTestName = testDetails.filter((elem) => elem.category == role);
 
 
@@ -188,28 +198,7 @@ export default function Test() {
 
   } else {
     return (
-      <div className="relative bg-white container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
-        <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-          <h4 className="mt-2 text-4xl text-center font-medium tracking-tight text-gray-950 max-lg:text-center">
-            Войдите или зарегистрируйтесь чтобы пройти тестирование
-          </h4>
-        </div>
-        <div className="flex flex-1 justify-center mt-10 px-10 max-lg:pb-12 max-lg:pt-10 sm:px-10 lg:pb-12">
-          <a
-            href="/login"
-            className="duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Войти
-          </a>
-          <a
-            href="/register"
-            className="duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Зарегистрироваться
-          </a>
-        </div>
-      </div>
-
+      <NonAuth />
     );
   }
 }

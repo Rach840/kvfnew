@@ -8,19 +8,20 @@ datasource db {
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  firstName    String
-  lastName     String
-  surName      String  @default("")
-  password     String
-  email        String  @unique
-  organisation String  @default("")
-  testPassed   Boolean @default(false)
-  passedDate   String  @default("")
-  startTest    String  @default("TRAINING")
-  role         String  @default("SCHOOLBOY")
-  testsResult  Json
-  okAnswers    Int
+  id            Int       @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  surName       String    @default("")
+  password      String
+  email         String    @unique
+  emailVerified DateTime?
+  organisation  String    @default("")
+  testPassed    Boolean   @default(false)
+  passedDate    String    @default("")
+  startTest     String    @default("TRAINING")
+  role          String    @default("SCHOOLBOY")
+  testsResult   Json
+  okAnswers     Int
 }
 
 model Test {
@@ -31,4 +32,12 @@ model Test {
   category    String
   text        Json
   testDisable Boolean @default(false)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

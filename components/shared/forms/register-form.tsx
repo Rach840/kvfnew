@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "@/app/actions";
 import { TFormRegisterValues, RegisterSchema } from "./schema";
 import { FormInput } from "./forminput";
 import { Button } from "@/components/ui/button";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -22,8 +22,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+
 export const RegisterForm: React.FC = ({ }) => {
   const router = useRouter();
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      router.replace("/");
+    }
+  }, [session, router]);
+
   const form = useForm<TFormRegisterValues>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -37,7 +46,7 @@ export const RegisterForm: React.FC = ({ }) => {
       role: "",
     },
   });
-
+  console.log(useSession())
   const onSubmit = async (data: TFormRegisterValues) => {
     console.log(data);
     const result = await registerUser({
@@ -52,14 +61,14 @@ export const RegisterForm: React.FC = ({ }) => {
       okAnswers: 0,
       testsResult: "[]",
     });
-    console.log({ result });
+
     try {
       if (result.success) {
-        signIn("credentials", {
+        signIn('email', {
           email: data.email,
           password: data.password,
           redirect: false,
-        }).then(() => router.push("/"));
+        }).then(() => router.replace("/verification-request"));
       } else {
       }
     } catch (err) {

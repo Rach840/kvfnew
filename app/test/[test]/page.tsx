@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -8,19 +8,28 @@ import {
   getTestText,
   updateUserTestInfo,
   updateUserStartTestInfo,
+  Users,
+  UserTests,
 } from "@/app/actions";
 import { getUserSession } from "@/lib/get-session-server";
 
 import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Alert } from "@mui/material";
+import Link from "next/link";
+import { JsonValue } from "@prisma/client/runtime/library";
+import NonAuth from "@/components/shared/non-auth";
 
 interface Question {
   question: string;
   options: string[];
   correctAnswer: number;
+  questionScore: number;
 }
-
+interface tinyTest {
+  name: string;
+  text: string
+}
 // Import the getTestText function from wherever it's defined
 
 export default function TestPage() {
@@ -28,25 +37,32 @@ export default function TestPage() {
   const [questions, setQuestions] = React.useState<Question[]>([]);
   const [userAnswers, setUserAnswers] = React.useState<number[]>([]);
   const [showResults, setShowResults] = React.useState(false);
-  const [testName, setTestName] = React.useState();
+  const [testName, setTestName] = React.useState<string>();
   const [score, setScore] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const [user, setUser] = React.useState();
+  const [user, setUser] = React.useState<Users>();
   const [userTestsName, setUserTestsName] = React.useState();
-
+  const router = useRouter();
   React.useEffect(() => {
     (async () => {
       try {
         const session = await getUserSession();
-        setUser(session);
+
+        if (session != null) {
+          setUser(session);
+        }
+        if (session && !session?.emailVerified) {
+          router.replace("/verification-request")
+        }
 
         setIsLoading(true);
-        const test = await getTestText(pathName);
+        const test: tinyTest = await getTestText(pathName);
         setTestName(test?.name);
         if (test && "text" in test) {
-          const parsedQuestions: Question[] = JSON.parse(test.text);
+          const parsedQuestions: Question[] = shuffle(JSON.parse(test.text));
 
+          console.log(parsedQuestions)
           setQuestions(parsedQuestions);
           setUserAnswers(new Array(parsedQuestions.length).fill(-1));
         } else {
@@ -67,7 +83,7 @@ export default function TestPage() {
       const userTestResponse = JSON.parse(user.testsResult);
 
       if (userTestResponse.length >= 1) {
-        const userTestName = userTestResponse.map((elem) => elem.testName);
+        const userTestName = userTestResponse.map((elem: UserTests) => elem.testName);
         setUserTestsName(userTestName);
       }
     }
@@ -79,6 +95,21 @@ export default function TestPage() {
       return newAnswers;
     });
   };
+  function shuffle(array: []): [] {
+    let temporaryValue;
+    let randomIndex;
+
+    for (let i = array.length; 0 !== i;) {
+      randomIndex = Math.floor(Math.random() * i);
+      --i;
+      temporaryValue = array[i];
+      array[i] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
   let noAnswerGlobal = -1;
   const calculateScore = async () => {
     let questionScore = 0;
@@ -90,7 +121,7 @@ export default function TestPage() {
     }
     questions.forEach((question, index) => {
       if (question.correctAnswer === userAnswers[index]) {
-        questionScore += Number(question.questionScore);
+        questionScore += question.questionScore;
       }
     });
 
@@ -235,29 +266,7 @@ export default function TestPage() {
 
   if (error) {
     return (
-      <>
-        <div className="relative bg-white container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
-          <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-            <h4 className="mt-2 text-4xl text-center font-medium tracking-tight text-gray-950 max-lg:text-center">
-              Ошибка, вы не авторизованы
-            </h4>
-          </div>
-          <div className="flex flex-1 justify-center mt-10 px-10 max-lg:pb-12 max-lg:pt-10 sm:px-10 lg:pb-12">
-            <a
-              href="/login"
-              className="duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Войти
-            </a>
-            <a
-              href="/register"
-              className="duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Зарегистрироваться
-            </a>
-          </div>
-        </div>
-      </>
+      <NonAuth />
     );
   }
 
@@ -271,18 +280,18 @@ export default function TestPage() {
             </h4>
           </div>
           <div className="flex flex-1 justify-center mt-10 px-10 max-lg:pb-12 max-lg:pt-10 sm:px-10 lg:pb-12">
-            <a
+            <Link
               href="/login"
               className="duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Войти
-            </a>
-            <a
+            </Link>
+            <Link
               href="/register"
               className="duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Зарегистрироваться
-            </a>
+            </Link>
           </div>
         </div>
       </>
@@ -386,27 +395,7 @@ export default function TestPage() {
     );
   } else {
     return (
-      <div className="relative container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
-        <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-          <h4 className="mt-2 text-4xl text-center font-medium tracking-tight text-gray-950 max-lg:text-center">
-            Войдите или зарегистрируйтесь чтобы пройти тестирование
-          </h4>
-        </div>
-        <div className="flex flex-1 justify-center mt-10 px-10 max-lg:pb-12 max-lg:pt-10 sm:px-10 lg:pb-12">
-          <a
-            href="/login"
-            className="duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Войти
-          </a>
-          <a
-            href="/register"
-            className="duration-300 mr-4 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Зарегистрироваться
-          </a>
-        </div>
-      </div>
+      <NonAuth />
     );
   }
 }

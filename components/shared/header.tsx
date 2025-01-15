@@ -26,7 +26,7 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
   }
 
   const user = {
-    imageUrl: "../acc-icon.png",
+    imageUrl: "@public/acc-icon.png",
   };
 
   const adminNavigation = [
@@ -52,7 +52,7 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                   <img
                     onClick={() => router.replace("/")}
                     alt="КВФ"
-                    src=".././logo.png"
+                    src="../.././logo.png"
                     className="size-20 w-32"
                   />
                 </div>
@@ -60,21 +60,21 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                   <div className="ml-10 flex items-baseline space-x-4">
                     {status == "loading"
                       ? userNavigation?.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href.includes("home") ? "/" : item.href}
-                            className={cn(
-                              "rounded-md px-3 py-3 text-lg font-medium duration-300",
-                              adjustedPathName.includes(item.href)
-                                ? "bg-slate-300 text-zinc-950"
-                                : "text-zinc-950 hover:bg-slate-300 hover:text-white"
-                            )}
-                          >
-                            {item.name}
-                          </Link>
-                        ))
+                        <Link
+                          key={item.name}
+                          href={item.href.includes("home") ? "/" : item.href}
+                          className={cn(
+                            "rounded-md px-3 py-3 text-lg font-medium duration-300",
+                            adjustedPathName.includes(item.href)
+                              ? "bg-slate-300 text-zinc-950"
+                              : "text-zinc-950 hover:bg-slate-300 hover:text-white"
+                          )}
+                        >
+                          {item.name}
+                        </Link>
+                      ))
                       : session?.user.role == "ADMIN"
-                      ? adminNavigation?.map((item) => (
+                        ? adminNavigation?.map((item) => (
                           <Link
                             key={item.name}
                             href={item.href.includes("home") ? "/" : item.href}
@@ -88,7 +88,7 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                             {item.name}
                           </Link>
                         ))
-                      : userNavigation?.map((item) => (
+                        : userNavigation?.map((item) => (
                           <Link
                             key={item.name}
                             href={item.href.includes("home") ? "/" : item.href}
@@ -151,21 +151,21 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
               <div className=" items-baseline space-y-4">
                 {status == "loading"
                   ? userNavigation?.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href.includes("home") ? "/" : item.href}
-                        className={cn(
-                          "rounded-md block px-3 py-3 text-lg font-medium duration-300",
-                          adjustedPathName.includes(item.href)
-                            ? "bg-slate-300 text-zinc-950"
-                            : "text-zinc-950 hover:bg-slate-300 hover:text-white"
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    ))
+                    <Link
+                      key={item.name}
+                      href={item.href.includes("home") ? "/" : item.href}
+                      className={cn(
+                        "rounded-md block px-3 py-3 text-lg font-medium duration-300",
+                        adjustedPathName.includes(item.href)
+                          ? "bg-slate-300 text-zinc-950"
+                          : "text-zinc-950 hover:bg-slate-300 hover:text-white"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  ))
                   : session?.user.role == "ADMIN"
-                  ? adminNavigation?.map((item) => (
+                    ? adminNavigation?.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href.includes("home") ? "/" : item.href}
@@ -179,7 +179,7 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                         {item.name}
                       </Link>
                     ))
-                  : userNavigation?.map((item) => (
+                    : userNavigation?.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href.includes("home") ? "/" : item.href}

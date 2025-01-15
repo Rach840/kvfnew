@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import Skeleton from '@mui/material/Skeleton';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { createTest, deleteTest, getTests, testBlocked } from "@/app/actions";
+import { createTest, deleteTest, getTests, testBlocked, Tests, Users } from "@/app/actions";
 import { FormControl, FormField } from "@/components/ui/form";
 import { getUserSession } from "@/lib/get-session-server";
 import Box from '@mui/material/Box';
@@ -23,6 +23,7 @@ import {
 import { FormInput } from "@/components/shared/forms/forminput";
 import Link from "next/link";
 import { X } from "lucide-react";
+import NotFound from "../not-found";
 
 
 
@@ -30,13 +31,17 @@ import { X } from "lucide-react";
 
 export default function CreateTestForm() {
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<Users>();
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     (async () => {
       const u = await getUserSession();
-      setUser(u);
+      if (u) {
+        setUser(u);
+      } else {
+        setUser(undefined); // Explicitly set undefined if the session is null or undefined
+      }
     })();
   }, []);
 
@@ -45,16 +50,20 @@ export default function CreateTestForm() {
     defaultValues: {
       category: "",
       name: "",
+      nameTranslit: "",
       text: "",
     },
   });
 
-  const [tests, setTests] = React.useState([]);
+  const [tests, setTests] = React.useState<Tests[] | undefined>([]);
 
   React.useEffect(() => {
     (async () => {
       const testArr = await getTests();
-      setTests(testArr);
+      if (testArr) {
+        setTests(testArr);
+      }
+
       setIsLoading(false);
     })();
   }, []);
@@ -79,8 +88,11 @@ export default function CreateTestForm() {
     const testArr = await getTests();
     setTests(testArr);
   };
-
-  if (isLoading) {
+  if (!user || user.role != "ADMIN") {
+    return (
+      <NotFound />
+    );
+  } else if (isLoading) {
     return (
       <Box sx={{ margin: '20px auto', width: "80%" }}>
 
@@ -96,16 +108,6 @@ export default function CreateTestForm() {
         <Skeleton height={140} style={{ marginBottom: -40 }} animation="wave" />
 
       </Box>
-    );
-  } else if (!user || user.role != "ADMIN") {
-    return (
-      <div className="relative container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10 shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
-        <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-          <h4 className="mt-2 text-4xl text-center font-medium tracking-tight text-gray-950 max-lg:text-center">
-            Ошибка, данной страницы не существует
-          </h4>
-        </div>
-      </div>
     );
   } else {
     return (
@@ -166,6 +168,7 @@ export default function CreateTestForm() {
           <div className="mt-10 container mx-auto space-y-4">
             {tests.map((test) => (
               <div key={test.id} className="flex items-center bg-slate-300 grow rounded-2xl p-5 items-center justify-between">
+
                 <Link
                   href={`/create-test/${test.id}`}
                   key={test.id}
@@ -176,6 +179,11 @@ export default function CreateTestForm() {
                     {test.category}
                   </span>
                 </Link>
+                <Link
+                  href={`/create-test/statistic/${test.id}`}
+                  key={'stat' + test.id}
+                  className="flex duration-300 mx-10 rounded-md bg-zinc-800 px-5 py-3 text-sm my-4 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 items-center justify-between"
+                >Посмотреть статистику</Link>
                 <Button
                   onClick={() => testBlockedRedirect(test.id)}
                   variant={test.testDisable ? 'succes' : "destructive"}

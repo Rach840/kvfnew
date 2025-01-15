@@ -13,7 +13,7 @@ import { hash } from "crypto";
   const url = await getSignedUrl(
     s3,
     new PutObjectCommand({
-      Bucket: "schedule-bucket",
+      Bucket: "kvf",
       Key: `test/${test_id}/${Date.now()}.txt`,
     }),
     { expiresIn: 3600 }

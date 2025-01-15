@@ -1,9 +1,10 @@
 
+import { Users } from "@/app/actions";
 import { NextResponse } from "next/server";
 import * as XLSX from "xlsx";
 
 
-export default async function GET(responce) {
+export default async function GET(responce: Users[]) {
 
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(responce);
