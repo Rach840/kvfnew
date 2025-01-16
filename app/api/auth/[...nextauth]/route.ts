@@ -14,14 +14,14 @@ export const authOptions: AuthOptions = {
   providers: [
     EmailProvider({
       server: {
-        host: "connect.smtp.bz",
+        host: process.env.EMAIL_SERVER_HOST,
         port: 2525,
         auth: {
-          user: "ladamelikovna@gmail.com",
-          pass: "2CcIELFtiQKj"
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD
         }
       },
-      from: "noreply@24kvf.ru"
+      from: process.env.EMAIL_FROM
     }),
     CredentialsProvider({
       name: "Credentials",
