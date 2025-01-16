@@ -8,35 +8,15 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: number;
-      firstName: string;
-      lastName: string;
-      surName: string;
-      email: string;
-      organisation: string;
-      role: string;
-      testPassed: boolean;
-      startTest: string;
-      passedDate: string;
-      testsResult: string;
-      okAnswers: number;
-      emailVerified: Date | null;
+      role: UserRole;
+      name: string;
+      image: string;
     };
   }
 
   interface User extends DefaultUser {
     id: number;
-    firstName: string;
-    lastName: string;
-    surName: string;
-    email: string;
-    organisation: string;
-    role: string;
-    testPassed: boolean;
-    startTest: string;
-    passedDate: string;
-    testsResult: string;
-    okAnswers: number;
-    emailVerified: Date | null;
+    role: UserRole;
   }
 }
 

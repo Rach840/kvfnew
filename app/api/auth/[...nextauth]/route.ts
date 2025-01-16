@@ -1,8 +1,9 @@
+
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/prisma/prisma-client";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcryptjs";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaClient } from "@prisma/client";
 
@@ -10,20 +11,17 @@ import { PrismaClient } from "@prisma/client";
 export const dbClient = new PrismaClient();
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(dbClient) as AuthOptions['adapter'],
-  pages: {
-    verifyRequest: '/verification-request',
-  },
   providers: [
     EmailProvider({
       server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
+        host: "connect.smtp.bz",
+        port: 2525,
         auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
+          user: "ladamelikovna@gmail.com",
+          pass: "2CcIELFtiQKj"
         }
       },
-      from: process.env.EMAIL_FROM
+      from: "noreply@24kvf.ru"
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -60,19 +58,9 @@ export const authOptions: AuthOptions = {
 
         return {
           id: findUser.id,
-          name: findUser.firstName,
-          lastName: findUser.lastName,
-          surName: findUser.surName,
-          password: findUser.password,
           email: findUser.email,
-          emailVerified: findUser.emailVerified,
-          organisation: findUser.organisation,
-          testPassed: findUser.testPassed,
-          passedDate: findUser.passedDate,
-          startTest: findUser.startTest,
+          name: findUser.firstName,
           role: findUser.role,
-          testsResult: findUser.testsResult,
-          okAnswers: findUser.okAnswers,
         };
       },
     }),
@@ -150,7 +138,3 @@ export const authOptions: AuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST }
-
-// function EmailProvider(arg0: { server: string | undefined; from: string | undefined; }): import("next-auth/providers/index").Provider {
-//   throw new Error("Function not implemented.");
-// }

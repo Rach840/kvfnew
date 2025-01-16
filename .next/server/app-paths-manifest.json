@@ -1,0 +1,8 @@
+{
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/test/page": "app/test/page.js",
+  "/login/page": "app/login/page.js",
+  "/verification-request/page": "app/verification-request/page.js",
+  "/login-with-email/page": "app/login-with-email/page.js"
+}
