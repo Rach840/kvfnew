@@ -4,9 +4,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  env: {
-    BASE_URL: process.env.BASE_URL,
-  },
   images: {
     unoptimized: true,
   },
