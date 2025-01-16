@@ -3,8 +3,6 @@ services:
   web:
     # сборка на основе Dockerfile
     build: .
-    ports:
-      - '3000:3000'
     environment:
       - DATABASE_URL=mysql://rizo9235_rach3000:qwerty228337!@37.27.63.3:3306/rizo9235_kvf_tasks
       - NODE_ENV=development
@@ -14,7 +12,7 @@ services:
       - EMAIL_SERVER_USER=ladamelikovna@gmail.com
       - EMAIL_SERVER_PASSWORD=2CcIELFtiQKj
       - EMAIL_SERVER_HOST=connect.smtp.bz
-      - EMAIL_SERVER_PORT=587
+      - EMAIL_SERVER_PORT=465
       - EMAIL_FROM=noreply@24kvf.ru
     # приложение зависит от БД
 
