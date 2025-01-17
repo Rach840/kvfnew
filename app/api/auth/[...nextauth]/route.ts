@@ -15,7 +15,7 @@ export const authOptions: AuthOptions = {
     EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
-        port: 2525,
+        port: 587,
         auth: {
           user: process.env.EMAIL_SERVER_USER,
           pass: process.env.EMAIL_SERVER_PASSWORD
@@ -70,7 +70,7 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       try {
 
         if (account?.provider === "credentials") {
@@ -81,7 +81,7 @@ export const authOptions: AuthOptions = {
           return false;
         }
         if (account?.provider === "email") {
-
+          console.log(profile)
           const userExists = await prisma.user.findFirst({
             where: {
               email: user.email,
