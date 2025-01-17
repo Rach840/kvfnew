@@ -50,7 +50,7 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
               <div className="flex items-center">
                 <div className="shrink-0">
                   <img
-                    onClick={() => router.replace("/")}
+                    onClick={() => router.replace("../")}
                     alt="КВФ"
                     src="../.././logo.png"
                     className="size-20 w-32"
@@ -217,7 +217,7 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
                     </DisclosureButton>
                     <DisclosureButton
                       onClick={() => {
-                        router.push("/");
+                        router.push("../");
                         signOut();
                       }}
                       className="block px-4 py-2 text-xl text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
