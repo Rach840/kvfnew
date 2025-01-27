@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { getUserSession } from "@/lib/get-session-server";
 import ExportButton from "@/components/shared/export-button";
-import { PieChart } from '@mui/x-charts/PieChart';
+import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
 
 export default function Statistic() {
 	const [users, setUsers] = React.useState<UsersUnPackage[]>([]);
@@ -166,13 +166,45 @@ export default function Statistic() {
 	const stat3 = users.filter(item => item.testsResult.score >= 40 && item.testsResult.score < 60).length
 	const stat4 = users.filter(item => item.testsResult.score >= 60 && item.testsResult.score < 80).length
 	const stat5 = users.filter(item => item.testsResult.score >= 80 && item.testsResult.score <= 100).length
-	console.log(stat1, stat2, stat3, stat4, stat5)
+	const stats = [
+		{ value: stat1, label: 'От 0 до 20' },
+		{ value: stat2, label: 'От 20 до 40' },
+		{ value: stat3, label: 'От 40 до 60' },
+		{ value: stat4, label: 'От 60 до 80' },
+		{ value: stat5, label: 'От 80 до 100' },
+	]
+	const valueFormatter = (item: { value: number }) => `${(item.value / users.length * 100).toFixed(2)}%`;
+	const data = {
+		data: stats,
+		valueFormatter,
+	};
+	const size = {
+		width: 500,
+		height: 300,
+	};
+	console.log(users)
 	console.log(usersTests && usersTests.length > 0)
 	if (usersTests) {
 		return (
 			<div className="w-12/12 mx-auto mt-3 ">
-
 				<PieChart
+					series={[
+						{
+							arcLabel: (item) => `${(item.value / users.length * 100).toFixed(2)}%`,
+							arcLabelMinAngle: 35,
+							arcLabelRadius: '60%',
+							...data,
+						},
+					]}
+					sx={{
+						[`& .${pieArcLabelClasses.root}`]: {
+							fontWeight: 'bold',
+						},
+					}}
+					{...size}
+					className="mx-auto  -top-9"
+				/>
+				{/* <PieChart
 					series={
 						[{
 							data: [
@@ -187,7 +219,7 @@ export default function Statistic() {
 					width={500}
 					height={300}
 					className="mx-auto  -top-9"
-				/>
+				/> */}
 
 				<div className="flex items-center justify-between rounded-t-xl bg-gray-100 py-3 px-3  pt-4">
 					<div className="block">

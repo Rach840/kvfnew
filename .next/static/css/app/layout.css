@@ -2049,6 +2049,10 @@ body {
     width: 75%;
   }
 
+  .lg\:w-4\/5 {
+    width: 80%;
+  }
+
   .lg\:flex-row {
     flex-direction: row;
   }
@@ -2079,6 +2083,10 @@ body {
 
   .xl\:w-2\/4 {
     width: 50%;
+  }
+
+  .xl\:w-3\/5 {
+    width: 60%;
   }
 
   .xl\:flex-row {
