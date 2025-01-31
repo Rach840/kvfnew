@@ -14,7 +14,6 @@ model User {
   surName       String    @default("")
   password      String
   email         String    @unique
-  emailVerified DateTime?
   organisation  String    @default("")
   testPassed    Boolean   @default(false)
   passedDate    String    @default("")
@@ -22,16 +21,16 @@ model User {
   role          String    @default("SCHOOLBOY")
   testsResult   Json
   okAnswers     Int
+  emailVerified DateTime?
 }
 
 model Test {
-  id           Int    @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   name         String
   nameTranslit String
-
-  category    String
-  text        Json
-  testDisable Boolean @default(false)
+  category     String
+  text         Json
+  testDisable  Boolean @default(false)
 }
 
 model VerificationToken {

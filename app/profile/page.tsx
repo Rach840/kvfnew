@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import Skeleton from '@mui/material/Skeleton';
 import NonAuth from "@/components/shared/non-auth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 
 export default function Profile() {
   const router = useRouter();
@@ -88,8 +90,8 @@ export default function Profile() {
           <div>
             {usersTests != null ? (
               usersTests?.map((elem) => (
-                <div
-                  key={elem.testName}
+                <Link key={elem.testName} href={`/profile/${elem.id}`}> <div
+
                   className="relative bg-white container px-4 mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]"
                 >
                   <p className="text-lg">
@@ -97,7 +99,7 @@ export default function Profile() {
                     {elem.score} баллов. Тест пройден в{" "}
                     {new Date(Number(elem.passedDate)).toLocaleString()}
                   </p>
-                </div>
+                </div></Link>
               ))
             ) : (
               <div className="relative container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]"></div>

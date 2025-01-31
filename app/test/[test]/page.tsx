@@ -14,10 +14,10 @@ import {
 import { getUserSession } from "@/lib/get-session-server";
 
 import Skeleton from "@mui/material/Skeleton";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Alert } from "@mui/material";
 import Link from "next/link";
 import NonAuth from "@/components/shared/non-auth";
+import RadialChart from "@/components/ui/radial-chart";
 
 interface Question {
   question: string;
@@ -26,6 +26,7 @@ interface Question {
   questionScore: number;
 }
 interface tinyTest {
+  id: number;
   name: string;
   text: string
 }
@@ -37,6 +38,7 @@ export default function TestPage() {
   const [userAnswers, setUserAnswers] = React.useState<number[]>([]);
   const [showResults, setShowResults] = React.useState(false);
   const [testName, setTestName] = React.useState<string>();
+  const [testId, setTestId] = React.useState<number>();
   const [score, setScore] = React.useState(1);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -60,8 +62,7 @@ export default function TestPage() {
         setTestName(test?.name);
         if (test && "text" in test) {
           const parsedQuestions: Question[] = shuffle(JSON.parse(test.text));
-
-          console.log(parsedQuestions)
+          setTestId(test.id)
           setQuestions(parsedQuestions);
           setUserAnswers(new Array(parsedQuestions.length).fill(-1));
         } else {
@@ -120,7 +121,7 @@ export default function TestPage() {
     }
     questions.forEach((question, index) => {
       if (question.correctAnswer === userAnswers[index]) {
-        questionScore += question.questionScore;
+        questionScore += +question.questionScore;
       }
     });
 
@@ -128,12 +129,21 @@ export default function TestPage() {
     setShowResults(true);
     if (user) {
       const testsUsers = JSON.parse(user.testsResult);
-
+      const answerHistory = questions.map((elem, index) => {
+        return {
+          question: elem.question,
+          options: elem.options,
+          questionScore: elem.questionScore,
+          userAswers: userAnswers[index]
+        };
+      });
       const testUsersString = JSON.stringify([
         ...testsUsers,
         {
+          id: testId,
           testName: testName,
           score: questionScore,
+          answerHistory: answerHistory,
           passedDate: new Date().getTime() + "",
         },
       ]);
@@ -304,14 +314,9 @@ export default function TestPage() {
 
     return (
       <>
-        <div className="relative w-full lg:w-8/12 container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)] p-4">
+        <div className="relative bg-white w-full lg:w-8/12 container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)] p-4">
           <h2 className="text-3xl font-bold mb-4 text-center">Поздравляем!</h2>
-          <CircularProgress
-            className="mx-auto my-6"
-            size={300}
-            value={scoreProcent}
-            variant="determinate"
-          />
+          <RadialChart valueNum={scoreProcent} />
 
           <h4 className="text-2xl font-bold mb-4 text-center">
             Вы решили тест на {`${Math.round(scoreProcent)}%`}

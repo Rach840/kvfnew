@@ -274,7 +274,7 @@ export async function saveCompletedTest(id: number, test: Question[]) {
   }
 }
 
-export async function getTetsById(id: number) {
+export async function getNameTestById(id: number) {
   try {
     const test = await prisma.test.findUnique({
       where: {
@@ -334,6 +334,7 @@ export async function getTestText(pathName: string) {
         nameTranslit: pathName,
       },
       select: {
+        id: true,
         name: true,
         text: true,
       },

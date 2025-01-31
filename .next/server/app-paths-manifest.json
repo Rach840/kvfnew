@@ -1,6 +1,0 @@
-{
-  "/verification-request/page": "app/verification-request/page.js",
-  "/create-test/page": "app/create-test/page.js",
-  "/create-test/statistic/[test]/page": "app/create-test/statistic/[test]/page.js",
-  "/login/page": "app/login/page.js"
-}
