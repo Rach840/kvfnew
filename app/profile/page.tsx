@@ -30,7 +30,10 @@ export default function Profile() {
       setIsLoading(false)
     })();
   }, []);
+  if (usersTests?.length >= 1) {
+    console.log(usersTests[0])
 
+  }
   if (user) {
     return (
       <>
@@ -88,7 +91,7 @@ export default function Profile() {
             </div>
           </div>
           <div>
-            {usersTests != null ? (
+            {usersTests?.length >= 1 ? (
               usersTests?.map((elem) => (
                 <Link key={elem.testName} href={`/profile/${elem.id}`}> <div
 
