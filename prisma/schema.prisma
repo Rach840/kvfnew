@@ -22,6 +22,8 @@ model User {
   testsResult   Json
   okAnswers     Int
   emailVerified DateTime?
+  teamMember String?
+  memberRole TeamRole?
 }
 
 model Test {
@@ -32,6 +34,25 @@ model Test {
   text         Json
   testDisable  Boolean @default(false)
 }
+model Teams {
+  id  String @id @default(uuid())
+  name String @unique
+  members Json @default("[]")
+  captainId Int?
+  supervisorId Int
+  country String
+  region String
+  city String
+  institution String
+  supervisorFullName String
+  captainFullName String
+  supervisorPhone String
+  captainPhone String
+  supervisorEmail String
+  captainEmail String
+  vkGroupUrl String
+
+}
 
 model VerificationToken {
   identifier String
@@ -39,4 +60,14 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+enum Phase {
+  ONE
+  TWO
+  FINAL
+}
+enum TeamRole {
+  SUPERVISOR
+  CAPTAIN
+  MEMBER
 }

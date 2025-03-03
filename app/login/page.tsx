@@ -1,15 +1,1 @@
-'use client'
-
-import LoginForm from "@/components/shared/forms/login-form";
-
-
-
-
-export default function Login() {
-  return (
-    <>
-
-      <LoginForm />
-    </>
-  );
-}
+export {LoginPage as default} from '@/src/pages/login';

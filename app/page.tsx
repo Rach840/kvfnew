@@ -1,9 +1,24 @@
-
-import { getUserSession } from "@/lib/get-session-server";
+'use client'
+import { getUserSession } from "@/src/shared/lib/get-session-server";
 import Link from "next/link";
-// import Header from "./components/shared/header";
-export default async function Home() {
-  const user = await getUserSession();
+import {useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
+export default function Home() {
+  const [user, setUser] = useState()
+
+  const router = useRouter();
+  useEffect(() => {
+
+    (async ()=> {
+      const user = await getUserSession();
+      console.log(!user?.teamMember)
+      if (!user?.teamMember) {
+        router.replace("/");
+      }
+      setUser(user)
+    })()
+
+  }, []);
   return (
     <div style={{ top: '-38px' }} className=" relative overflow-y-hidden">
       <main

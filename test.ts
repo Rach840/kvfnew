@@ -4,8 +4,6 @@ import { s3 } from "./utils/aws";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createReadStream, statSync } from "fs";
-import { readFile } from "fs/promises";
-import { hash } from "crypto";
 
 (async () => {
   const test_id = 123456789;
@@ -18,7 +16,6 @@ import { hash } from "crypto";
     }),
     { expiresIn: 3600 }
   );
-  console.log({ fileUri, url });
   const res = await fetch(url, {
     method: "POST",
     body: createReadStream(fileUri) as any,
@@ -26,6 +23,5 @@ import { hash } from "crypto";
       "Content-Length": statSync(fileUri).size.toString(),
     },
   });
-  console.log(await res.text());
   console.log("finished");
 })();

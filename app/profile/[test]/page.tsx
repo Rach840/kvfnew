@@ -1,10 +1,10 @@
 'use client'
-import { getTest } from "@/app/actions";
-import RadialChart from "@/components/ui/radial-chart";
-import { getUserSession } from "@/lib/get-session-server";
+import { getTest } from "@/src/app/actions";
+import RadialChart from "@/src/shared/ui/radial-chart";
+import { getUserSession } from "@/src/shared/lib/get-session-server";
 import { Skeleton } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/src/shared/ui/label";
 import React, { useState } from "react";
 
 

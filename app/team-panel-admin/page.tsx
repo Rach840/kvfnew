@@ -1,0 +1,1 @@
+export {AllTeamPage as default} from '@/src/pages/team'

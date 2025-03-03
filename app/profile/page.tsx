@@ -1,10 +1,10 @@
 "use client";
 
-import { getUserSession } from "@/lib/get-session-server";
+import { getUserSession } from "@/src/shared/lib/get-session-server";
 import React, { useState } from "react";
 
 import Skeleton from '@mui/material/Skeleton';
-import NonAuth from "@/components/shared/non-auth";
+import NonAuth from "@/src/shared/ui/non-auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

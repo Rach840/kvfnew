@@ -1,0 +1,1 @@
+export {TeamDashboardPage as default} from '@/src/pages/team'
