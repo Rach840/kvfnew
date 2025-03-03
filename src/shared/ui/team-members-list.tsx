@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/src/shared/ui/card"
 import { type TeamMember, TestStatus } from "@/src/shared/ui/admin-panel"
 import { Badge } from "@/src/shared/ui/badge"
 import { Progress } from "@/src/shared/ui/progress"
-import { CheckCircle2, Clock, Users } from "lucide-react"
+import { CheckCircle2, Clock } from "lucide-react"
 
 interface TeamMembersListProps {
   teamMembers: TeamMember[]
