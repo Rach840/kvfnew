@@ -30,6 +30,9 @@ export const CreateTestSchema = z.object({
   category: z.string(),
   text: z.string(),
 });
+const phoneRegex = new RegExp(
+    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+);
 
 export const RegisterSchema = z.object({
   firstName: z.string().min(3, {
@@ -40,6 +43,9 @@ export const RegisterSchema = z.object({
   }),
   surName: z.string(),
   email: z.string().email({ message: "Введите корректную почту" }),
+  nameTeam:z.string().min(4, {
+    message: "Название команды должно содержать минимум 4 символа",
+  }),
   password: z
     .string()
     .min(6, {
@@ -55,19 +61,24 @@ export const RegisterSchema = z.object({
       message: "Пароль должен содержать хотя бы одну цифру",
     }),
   organisation: z.string(),
-  role: z.string().min(1, {
-    message: "Выберите категорию",
-  }),
+  vkUrl: z.string().url({message: 'Введите корректный url'}),
   startTest: z.string().min(1, {
     message: "Выберите уровень теста",
   }),
+  region: z.string().min(3, {
+    message: "Регион команды должна содержать минимум 3 символа",
+  }),
+  city: z.string().min(3, {
+    message: "Город команды должна содержать минимум 3 символа",
+  }),
+  country: z.string().min(1, {
+    message: "Выберите страну",
+  }),
+  phone: z.string().regex(phoneRegex, {message: "Введите корректный номер телефона",}),
 });
 export const JoinTeamSchema = z.object({
   key: z.string().min(3,{message:'Введите ключ'}),
 });
-const phoneRegex = new RegExp(
-    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
-);
 
 export const RegisterTeamSchema = z.object({
   name: z.string().min(3, {

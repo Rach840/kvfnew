@@ -15,12 +15,14 @@ import {
   SelectValue,
 } from "@/src/shared/ui/select";
 import {
-  FormControl,
+  FormControl, FormDescription,
   FormField,
-  FormItem,
+  FormItem, FormLabel,
 
   FormMessage,
 } from "@/src/shared/ui/form";
+import {Checkbox} from "@/src/shared/ui/checkbox";
+import Link from "next/link";
 
 
 export const RegisterForm: React.FC = ({ }) => {
@@ -120,7 +122,115 @@ export const RegisterForm: React.FC = ({ }) => {
                     <FormInput name="surName" label="Отчество" required />
                   </div>
                 </div>
+                <div className="sm:col-span-3">
+                  <label
+                      htmlFor="name"
+                      className="block text-sm/6 font-medium text-gray-900"
+                  ></label>
+                  <div className="mt-2">
+                    <FormInput name="name" label="Название команды" required />
+                  </div>
+                </div>
 
+                <div className="sm:col-span-3">
+                  <label
+                      htmlFor="country"
+                      className="block text-sm/6 font-medium text-gray-900"
+                  >
+                    Страна
+                  </label>
+                  <div className="mt-2 grid grid-cols-1">
+                    <FormField
+                        control={form.control}
+                        name="country"
+                        render={({ field }) => (
+                            <FormItem>
+                              <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="Россия">
+                                    Россия
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage className="text-red-500 text-sm mt-1" />
+                            </FormItem>
+                        )}
+                    />
+                    { }
+                  </div>
+                </div>
+                <div className="sm:col-span-3">
+                  <label
+                      htmlFor="region"
+                      className="block text-sm/6 font-medium text-gray-900"
+                  ></label>
+                  <div className="mt-2">
+                    <FormInput name="region" label="Регион" required />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label
+                      htmlFor="city"
+                      className="block text-sm/6 font-medium text-gray-900"
+                  ></label>
+                  <div className="mt-2">
+                    <FormInput
+                        name="city"
+                        label="Город"
+                        required
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-3">
+                  <label
+                      htmlFor="vkGroupUrl"
+                      className="block text-sm/6 font-medium text-gray-900"
+                  ></label>
+                  <div className="mt-2">
+                    <FormInput
+                        name="vkGroupUrl"
+                        label="Ссылка на профиль в 'Вконтакте'"
+                        type='text'
+                        required
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-3">
+                  <label
+                      htmlFor="organisation"
+                      className="block text-sm/6 font-medium text-gray-900"
+                  ></label>
+                  <div className="mt-2">
+                    <FormInput
+                        name="organisation"
+                        label="Учебное заведение/организация, которую представляет ваша команда"
+                        required
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-3">
+                  <label
+                      htmlFor="supervisorPhone"
+                      className="block text-sm/6 font-medium text-gray-900"
+                  ></label>
+                  <div className="mt-2">
+                    <FormInput
+                        name="supervisorPhone"
+                        label="Мобильный номер телефона руководителя"
+                        type='tel'
+                        required
+                    />
+                  </div>
+                </div>
                 <div className="sm:col-span-3">
                   <label
                     htmlFor="email"
@@ -151,7 +261,7 @@ export const RegisterForm: React.FC = ({ }) => {
 
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="country"
+                    htmlFor="startTest"
                     className="block text-sm/6 font-medium text-gray-900"
                   >
                     Категория
@@ -159,7 +269,7 @@ export const RegisterForm: React.FC = ({ }) => {
                   <div className="mt-2 grid grid-cols-1">
                     <FormField
                       control={form.control}
-                      name="role"
+                      name="startTest"
                       render={({ field }) => (
                         <FormItem>
                           <Select
@@ -172,12 +282,11 @@ export const RegisterForm: React.FC = ({ }) => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="STUDENT">Студент</SelectItem>
-                              <SelectItem value="SCHOOLBOY">
-                                Школьник
+                              <SelectItem value="START">
+                                Входной
                               </SelectItem>
-                              <SelectItem value="SPECIALIST">
-                                Специалист
+                              <SelectItem value="RESULT">
+                                Итоговый
                               </SelectItem>
                             </SelectContent>
                           </Select>
@@ -187,58 +296,58 @@ export const RegisterForm: React.FC = ({ }) => {
                     />
                     { }
                   </div>
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="country"
-                      className="block text-sm/6 font-medium text-gray-900"
-                    >
-                      Категория начального теста
-                    </label>
-                    <div className="mt-2 grid grid-cols-1">
-                      <FormField
-                        control={form.control}
-                        name="startTest"
-                        render={({ field }) => (
-                          <FormItem>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="TRAINING">
-                                  Тренировочный
-                                </SelectItem>
-                                <SelectItem value="QUALIFYING">
-                                  Отборочный
-                                </SelectItem>
-                                <SelectItem value="BASIC">Основной</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage className="text-red-500 text-sm mt-1" />
-                          </FormItem>
-                        )}
-                      />
-                      { }
-                    </div>
-                  </div>
                 </div>
                 <div className="sm:col-span-3">
-                  <label
-                    htmlFor="organisation"
-                    className="block text-sm/6 font-medium text-gray-900"
-                  ></label>
-                  <div className="mt-2">
-                    <FormInput
-                      name="organisation"
-                      label="Организация"
-                      required
-                    />
-                  </div>
+                  <FormField
+                      control={form.control}
+                      name="agreement"
+                      render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                            <FormControl>
+                              <Checkbox
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  required
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>
+                                Согласие на обработку и передачу персональных данных
+                              </FormLabel>
+                              <FormDescription>
+                                Я даю свое согласие на обработку моих персональных данных и принимаю  <Link className='font-bold underline ' href="/agreement">согласие на обработку персональных данных</Link> {" "}
+
+                              </FormDescription>
+                            </div>
+                          </FormItem>
+                      )}
+                  />
+                </div>
+                <div className="sm:col-span-3">
+                  <FormField
+                      control={form.control}
+                      name="agreementVideo"
+                      render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                            <FormControl>
+                              <Checkbox
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  required
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>
+                                Согласие на фото и видеосъемку
+                              </FormLabel>
+                              <FormDescription>
+                                Я даю свое согласие на на фото и видеосъемку, а также на размещение их на ресурсах АНО АСИ и партнеров {" "}
+
+                              </FormDescription>
+                            </div>
+                          </FormItem>
+                      )}
+                  />
                 </div>
 
                 <Button

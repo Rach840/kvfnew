@@ -12,13 +12,19 @@ model User {
   firstName     String
   lastName      String
   surName       String    @default("")
+  nameTeam String
+  country String
+  region String
+  city String
+  phone String
+  vkUrl String
   password      String
   email         String    @unique
   organisation  String    @default("")
   testPassed    Boolean   @default(false)
   passedDate    String    @default("")
-  startTest     String    @default("TRAINING")
-  role          String    @default("SCHOOLBOY")
+  startTest     String    @default("START")
+  role          String    @default("USER")
   testsResult   Json
   okAnswers     Int
   emailVerified DateTime?

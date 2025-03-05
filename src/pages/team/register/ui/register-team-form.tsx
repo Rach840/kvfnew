@@ -107,11 +107,11 @@ if (succes){
                         <div className="mt-10 w-full  grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                             <div className="sm:col-span-3">
                                 <label
-                                    htmlFor="name"
+                                    htmlFor="nameTeam"
                                     className="block text-sm/6 font-medium text-gray-900"
                                 ></label>
                                 <div className="mt-2">
-                                    <FormInput name="name" label="Название команды" required />
+                                    <FormInput name="nameTeam" label="Название команды" required />
                                 </div>
                             </div>
 
