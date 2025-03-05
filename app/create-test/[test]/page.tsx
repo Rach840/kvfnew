@@ -1,0 +1,1 @@
+export {TestConstructor as default} from '@/src/pages/create-test'

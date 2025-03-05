@@ -1,0 +1,1 @@
+export {TestList as default} from '@/src/pages/test'

@@ -1,0 +1,1 @@
+export {TestPage as default} from '@/src/pages/test'

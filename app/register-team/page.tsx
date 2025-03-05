@@ -1,0 +1,1 @@
+export {RegisterTeamPage as default} from '@/src/pages/team'

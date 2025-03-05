@@ -1,0 +1,1 @@
+export {LoginWithEmail as default} from '@/src/pages/login';

@@ -1,0 +1,1 @@
+export {AgreementPage as default} from '@/src/pages/agreement'

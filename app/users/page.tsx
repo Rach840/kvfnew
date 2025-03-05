@@ -1,0 +1,1 @@
+export {UsersDashboard as default} from '@/src/pages/users'

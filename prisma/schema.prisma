@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  surName       String    @default("")
+  nameTeam String
+  country String
+  region String
+  city String
+  phone String
+  vkUrl String
+  password      String
+  email         String    @unique
+  organisation  String    @default("")
+  testPassed    Boolean   @default(false)
+  passedDate    String    @default("")
+  startTest     String    @default("START")
+  role          String    @default("USER")
+  testsResult   Json
+  okAnswers     Int
+  emailVerified DateTime?
+  teamMember String?
+  memberRole TeamRole?
+}
+
+model Test {
+  id           Int     @id @default(autoincrement())
+  name         String
+  nameTranslit String
+  category     String
+  text         Json
+  testDisable  Boolean @default(false)
+}
+model Teams {
+  id  String @id @default(uuid())
+  name String @unique
+  members Json @default("[]")
+  captainId Int?
+  supervisorId Int
+  country String
+  region String
+  city String
+  institution String
+  supervisorFullName String
+  captainFullName String
+  supervisorPhone String
+  captainPhone String
+  supervisorEmail String
+  captainEmail String
+  vkGroupUrl String
+
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+enum Phase {
+  ONE
+  TWO
+  FINAL
+}
+enum TeamRole {
+  SUPERVISOR
+  CAPTAIN
+  MEMBER
+}

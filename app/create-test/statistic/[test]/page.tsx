@@ -1,0 +1,1 @@
+export {Statistic as default} from '@/src/pages/create-test'

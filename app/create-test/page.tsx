@@ -1,0 +1,1 @@
+export {CreateTestForm as default} from '@/src/pages/create-test'
