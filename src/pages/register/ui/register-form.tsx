@@ -43,9 +43,14 @@ export const RegisterForm: React.FC = ({ }) => {
       surName: "",
       email: "",
       password: "",
-      startTest: "",
+      startTest: "START",
       organisation: "",
-      role: "",
+      vkUrl: "",
+      nameTeam: "",
+      region: "",
+      phone: "",
+      country: "",
+      city: "",
     },
   });
   console.log(useSession())
@@ -56,12 +61,17 @@ export const RegisterForm: React.FC = ({ }) => {
       lastName: data.lastName,
       surName: data.surName ? data.surName : "",
       email: data.email,
+      nameTeam: data.nameTeam,
+      region: data.region,
+      phone: data.phone,
+      country: data.country,
+      city: data.city,
       password: data.password,
       startTest: data.startTest,
       organisation: data.organisation ? data.organisation : "",
-      role: data.role,
       okAnswers: 0,
       testsResult: "[]",
+      vkUrl: data.vkUrl,
     });
 
     try {
@@ -124,11 +134,11 @@ export const RegisterForm: React.FC = ({ }) => {
                 </div>
                 <div className="sm:col-span-3">
                   <label
-                      htmlFor="name"
+                      htmlFor="nameTeam"
                       className="block text-sm/6 font-medium text-gray-900"
                   ></label>
                   <div className="mt-2">
-                    <FormInput name="name" label="Название команды" required />
+                    <FormInput name="nameTeam" label="Название команды" required />
                   </div>
                 </div>
 
@@ -192,12 +202,12 @@ export const RegisterForm: React.FC = ({ }) => {
                 </div>
                 <div className="sm:col-span-3">
                   <label
-                      htmlFor="vkGroupUrl"
+                      htmlFor="vkUrl"
                       className="block text-sm/6 font-medium text-gray-900"
                   ></label>
                   <div className="mt-2">
                     <FormInput
-                        name="vkGroupUrl"
+                        name="vkUrl"
                         label="Ссылка на профиль в 'Вконтакте'"
                         type='text'
                         required
@@ -219,13 +229,13 @@ export const RegisterForm: React.FC = ({ }) => {
                 </div>
                 <div className="sm:col-span-3">
                   <label
-                      htmlFor="supervisorPhone"
+                      htmlFor="phone"
                       className="block text-sm/6 font-medium text-gray-900"
                   ></label>
                   <div className="mt-2">
                     <FormInput
-                        name="supervisorPhone"
-                        label="Мобильный номер телефона руководителя"
+                        name="phone"
+                        label="Мобильный номер телефона"
                         type='tel'
                         required
                     />
@@ -246,7 +256,7 @@ export const RegisterForm: React.FC = ({ }) => {
                 </div>
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="email"
+                    htmlFor="password"
                     className="block text-sm/6 font-medium text-gray-900"
                   ></label>
                   <div className="mt-2">

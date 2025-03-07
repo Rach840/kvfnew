@@ -1,17 +1,18 @@
 'use client';
 
-import { getAllUsers, getTest, Tests, Users } from "@/src/app/actions";
+import { getAllUsers, getTest  } from "@/src/app/actions";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { getUserSession } from "@/src/shared/lib/get-session-server";
 import ExportButton from "@/src/shared/ui/export-button";
 import { pieArcLabelClasses, PieChart } from '@mui/x-charts/PieChart';
-import { UsersUnPackage } from "@/src/shared/model/types";
+import {Tests, UsersUnPackage } from "@/src/shared/model/types";
+import { User } from "@/src/db/schema";
 
 export function Statistic() {
     const [users, setUsers] = React.useState<UsersUnPackage[]>([]);
     const [_users, _setUsers] = React.useState<UsersUnPackage[]>([]);
-    const [usersTests, setUsersTests] = useState<Users[]>();
+    const [usersTests, setUsersTests] = useState<User[]>();
     // const [usersPassedTests, setUsersPassedTests] = useState<boolean>();
     // const [user, setUser] = useState();
     // const [isLoading, setIsLoading] = React.useState(true);
@@ -23,7 +24,7 @@ export function Statistic() {
             try {
                 const user = await getUserSession();
                 const testById: Tests | null = await getTest(pathId);
-                const userAll: Users[] = await getAllUsers();
+                const userAll: User[] = await getAllUsers();
 
                 if (user?.role === 'ADMIN') {
                     const userPassedTests = userAll.filter(item =>

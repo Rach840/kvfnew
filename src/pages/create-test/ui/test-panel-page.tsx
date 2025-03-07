@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import Skeleton from '@mui/material/Skeleton';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/src/shared/ui/button";
-import { createTest, deleteTest, getTests, testBlocked, Tests, Users } from "@/src/app/actions";
+import { createTest, deleteTest, getTests, testBlocked } from "@/src/app/actions";
 import { FormControl, FormField } from "@/src/shared/ui/form";
 import { getUserSession } from "@/src/shared/lib/get-session-server";
 import Box from '@mui/material/Box';
@@ -24,6 +24,8 @@ import { FormInput } from "@/components/shared/forms/forminput";
 import Link from "next/link";
 import { X } from "lucide-react";
 import NotFound from "@/src/app/not-found";
+import { User } from "@/src/db/schema";
+import { Tests } from "@/src/shared/model/types";
 
 
 
@@ -32,7 +34,7 @@ import NotFound from "@/src/app/not-found";
 
 export function CreateTestForm() {
 
-    const [user, setUser] = useState<Users>();
+    const [user, setUser] = useState<User>();
     const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {

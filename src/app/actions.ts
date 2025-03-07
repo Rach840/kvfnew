@@ -5,41 +5,39 @@ import { hashSync } from "bcryptjs";
 import { createTransport } from "nodemailer"
 import { v4 as uuidv4 } from "uuid";
 import { JsonValue } from "@prisma/client/runtime/library";
-import { teams, Teams, user } from "../db/schema";
+import {teams, Teams, Test, test, User, user} from "../db/schema";
 import { db } from "../db";
 import { eq } from "drizzle-orm";
-import { Question } from "../shared/model/types";
+import {Question, ResponceResult, Tests} from "../shared/model/types";
 
 
 const emailStyles = '        body {\n    background-color: #f4f4f4;\n    margin: 0;\n    padding: 20px;\n  }\n.container {\n    background-color: white;\n    border-radius: 5px;\n    color: #000;\n    padding: 20px;\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\n    max-width: 600px;\n    margin: auto;\n    font-size: 1.3rem;\n  }\n  h1 {\n    font-size:1.4rem;\n    color: #ffbd33;\n  }\n.footer {\n    margin-top: 20px;\n    font-size: 0.9em;\n    color: #777;\n  }\n.button {\n    background-color: #ffbd33;\n    color: #fff;\n    padding: 10px 15px;\n    text-decoration: none;\n    border-radius: 5px;\n    display: inline-block;\n    margin-top: 20px;\n  }'
 export async function registerUser(
-  body: Prisma.UserCreateInput
+  body: User
 ): Promise<RegisterResult> {
   try {
-    const user = await prisma.user.findFirst({
-      where: {
-        email: body.email,
-      },
-    });
-
-    if (user) {
+    const userItem = await db.select().from(user).where(eq(user.email, body.email));
+    if (userItem) {
       return { success: false };
     } else {
-      const createdUser = await prisma.user.create({
-        data: {
-          firstName: body.firstName,
-          lastName: body.lastName,
-          surName: body.surName,
-          email: body.email,
-          password: hashSync(body.password, 10),
-          startTest: body.startTest,
-          organisation: body.organisation,
-          role: body.role,
-          okAnswers: 0,
-          testsResult: "[]",
-        },
-      });
 
+      const createdUser = await db.insert(user).values({
+        firstName: body.firstName,
+        lastName: body.lastName,
+        surName: body.surName,
+        email: body.email,
+        country: body.country,
+        city: body.city,
+        region: body.region,
+        phone: body.phone,
+        vkUrl: body.vkUrl,
+        nameTeam: body.nameTeam,
+        password: hashSync(body.password, 10),
+        startTest: body.startTest,
+        organisation: body.organisation,
+        okAnswers: 0,
+        testsResult: "[]",
+      })
 
 
       return { success: !!createdUser };
@@ -144,15 +142,11 @@ export async function registerTeam(
 }
 export async function joinTeam(
     body: { key:string },
-    user: Users,
+    userItem: User,
 ): Promise<RegisterTeamResult> {
   console.log(body.key)
   try {
-    const team = await prisma.teams.findUnique({
-      where: {
-        id: body.key,
-      },
-    });
+    const team = await db.select().from(teams).where(eq(body.key, teams.id))
     console.log(team);
 if (!team) {
   return { success: false, message:'Команды с таким пригласительным кодом не существует' };
@@ -163,33 +157,35 @@ if (!team) {
           id: user.id,
         },
         data: {
-          teamMember: team.id,
-          memberRole: 'MEMBER'
+
         },
-      })
-    const members = JSON.parse(team.members);
-members.push(user.id);
-    await prisma.teams.update({
-      where: {
-        id: body.key,
-      },
-      data: {
-       members: JSON.stringify(members),
-      },
-    })
+      });
+await db.update(user).set({
+  teamMember: team[0].id,
+  memberRole: 'MEMBER'
+})
+    const members = JSON.parse(team[0].members);
+members.push(userItem.id);
+
+
+await db.update(teams).set({
+  members: JSON.stringify(members),
+}).where(eq(teams.id, body.key));
+
 
       const transport = createTransport(transportMail);
+
     await transport.sendMail({
         to: user.email,
         from: process.env.EMAIL_FROM,
-        subject: `Вы вступили в команду "${team.name}"!`,
+        subject: `Вы вступили в команду "${team[0].name}"!`,
         html: `
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вы вступили в команду "${team.name}"!</title>
+    <title>Вы вступили в команду "${team[0].name}"!</title>
     <style>
    ${emailStyles}
     </style>
@@ -198,9 +194,9 @@ members.push(user.id);
 <img src="https://asi24.ru/wp-content/uploads/2024/10/logoasi24.jpg" width="109" height="55"/>
 
     <div class="container">
-        <h1>Вы вступили в команду ${team.name}!</h1>
-        <p>Дорогой ${user.name},</p>
-        <p>Ваша заявка на вступление в команду, <strong>${team.name}</strong>, была успешна одобрена.</p>
+        <h1>Вы вступили в команду ${team[0].name}!</h1>
+        <p>Дорогой ${userItem.firstName},</p>
+        <p>Ваша заявка на вступление в команду, <strong>${team[0].name}</strong>, была успешна одобрена.</p>
         <p>Ждем вас в игре!</p>
         <p>Можете посмотреть полную информацию по команде, нажав на кнопку.</p>
 
@@ -224,44 +220,29 @@ members.push(user.id);
   }
 }
 export async function updateProfile(
-  body: Prisma.UserUncheckedUpdateInput
-): Promise<ProfileEdited> {
+  body: User
+): Promise<ResponceResult> {
   try {
-
-    await prisma.user.update({
-      where: {
-        id: body.id as number,
-      },
-      data: {
-        firstName: body.firstName,
-        lastName: body.lastName,
-        email: body.email,
-      },
-    });
-    return { edit: true };
+    await db.update(user).set({
+      firstName: body.firstName,
+      lastName: body.lastName,
+      email: body.email,
+    }).where(eq(body.id, user.id))
+    return { success: true };
   } catch (err) {
     console.error(err);
-    return { edit: false };
+    return { success: false };
   }
 }
 
-type RegisterResult = {
-  success: boolean;
-};
-type RegisterTeamResult = {
-  success: boolean;
-  message?: string;
-};
-type ProfileEdited = {
-  edit: boolean;
-};
+
 
 
 
 export async function getAllTeam(): Promise<Teams[]> {
   try {
-    const teams = await prisma.teams.findMany();
-    return teams;
+    const teamItems = await db.select().from(teams);
+    return teamItems;
   } catch (err) {
     console.log(err)
     return [];
@@ -269,29 +250,9 @@ export async function getAllTeam(): Promise<Teams[]> {
 }
 
 
-export async function getAllUsers(): Promise<Users[]> {
+export async function getAllUsers(): Promise<User[]> {
   try {
-    const users = await prisma.user.findMany({
-      where: {
-        role: {
-          in: ["SCHOOLBOY", "STUDENT", "SPECIALIST"],
-        },
-      },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        surName: true,
-        email: true,
-        organisation: true,
-        role: true,
-        startTest: true,
-        testPassed: true,
-        passedDate: true,
-        testsResult: true,
-        okAnswers: true,
-      },
-    });
+    const users = await db.select().from(user).where(eq(user.role, 'USER'));
     return users;
   } catch (err) {
     console.log(err)
@@ -328,10 +289,7 @@ function translit(word: string) {
 }
 
 
-
-
-
-export async function createTest(body: Prisma.TestCreateInput) {
+export async function createTest(body: Tests) {
   try {
     const test = await prisma.test.create({
       data: {
@@ -347,25 +305,11 @@ export async function createTest(body: Prisma.TestCreateInput) {
   }
 }
 
-export type Tests = {
-  id: number;
-  category: string;
-  name: string;
-  nameTranslit: string;
-  testDisable: boolean;
-  text?: JsonValue;
-};
+
 export async function getTests(): Promise<Tests[] | undefined> {
   try {
-    const tests = await prisma.test.findMany({
-      select: {
-        id: true,
-        name: true,
-        nameTranslit: true,
-        category: true,
-        testDisable: true,
-      },
-    });
+
+    const tests = await db.select().from(test);
     return tests;
   } catch (err) {
     console.log(err)
@@ -375,69 +319,40 @@ export async function getTests(): Promise<Tests[] | undefined> {
 }
 
 export async function deleteTest(id: number) {
-  await prisma.test.delete({
-    where: {
-      id: id,
-    },
-  });
-
+await db.delete(test).where(eq(test.id,id))
 }
 export async function testBlocked(id: number) {
-  const testEnable = await prisma.test.findFirst({
-    where: {
-      id: id,
-    },
-    select: {
-      testDisable: true
-    }
-  });
-  if (testEnable?.testDisable == true) {
-    await prisma.test.update({
-      where: {
-        id: id,
-      },
-      data: {
-        testDisable: false,
-      },
-    });
-  } else {
-    await prisma.test.update({
-      where: {
-        id: id,
-      },
-      data: {
-        testDisable: true,
-      },
-    });
-  }
 
+  const testEnable = await db.select().from(test).where(eq(test.id,id))
+  // if (testEnable[0]?.testDisable == true) {
+  //   await db.update(test).set({
+  //     testDisable: false,
+  //   }).where(eq(test.id,id))
+  // } else {
+  //   await db.update(test).set({
+  //     testDisable: (testEnable[0]?.testDisable == true) ? false : true,
+  //   }).where(eq(test.id,id))
+  // }
+  await db.update(test).set({
+    testDisable: (testEnable[0]?.testDisable == true) ? false : true,
+  }).where(eq(test.id,id))
 }
 
-export async function getTest(id: number): Promise<Tests | null> {
+export async function getTest(id: number): Promise<Test | null> {
   try {
-    const test = await prisma.test.findUnique({
-      where: {
-        id: id,
-      },
-    });
-    return test;
+    const testItem = await db.select().from(test).where(eq(test.id,id))
+    return testItem[0];
   } catch (err) {
     console.log(err)
-
     return null;
   }
 }
 
-export async function saveCompletedTest(id: number, test: Question[]) {
+export async function saveCompletedTest(id: number, questions: Question[]) {
   try {
-    const result = await prisma.test.update({
-      where: {
-        id: id,
-      },
-      data: {
-        text: JSON.stringify(test),
-      },
-    });
+    const result = await db.update(test).set({
+      text: JSON.stringify(questions),
+    }).where(eq(test.id,id))
     return result;
   } catch (error) {
     console.log(error)
@@ -456,6 +371,7 @@ export async function getNameTestById(id: number) {
         name: true,
       },
     });
+
     return test;
   } catch (err) {
     console.log(err)

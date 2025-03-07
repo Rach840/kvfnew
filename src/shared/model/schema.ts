@@ -65,6 +65,7 @@ export const RegisterSchema = z.object({
   startTest: z.string().min(1, {
     message: "Выберите уровень теста",
   }),
+
   region: z.string().min(3, {
     message: "Регион команды должна содержать минимум 3 символа",
   }),

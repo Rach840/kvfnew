@@ -1,14 +1,16 @@
 "use client";
 import { getUserSession } from "@/src/shared/lib/get-session-server";
 import React, { useState } from "react";
-import { getTests, Tests, Users } from "@/src/app/actions";
+import { getTests } from "@/src/app/actions";
 import Link from "next/link";
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import NonAuth from "@/src/shared/ui/non-auth";
 import { useRouter } from "next/navigation";
+import { Tests } from "@/src/shared/model/types";
+import { User } from "@/src/db/schema";
 export function TestList() {
-    const [user, setUser] = useState<Users>();
+    const [user, setUser] = useState<User>();
     const [isLoading, setIsLoading] = React.useState(true);
     const [userTestsName, setUserTestsName] = React.useState();
     const router = useRouter();

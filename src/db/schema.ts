@@ -1,4 +1,4 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, primaryKey, unique, varchar, json, int, datetime, mysqlEnum, tinyint } from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, primaryKey, unique, varchar, json, int, datetime, mysqlEnum, tinyint, boolean } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 export const teams = mysqlTable("Teams", {
@@ -30,14 +30,14 @@ export const test = mysqlTable("Test", {
 	nameTranslit: varchar({ length: 191 }).notNull(),
 	category: varchar({ length: 191 }).notNull(),
 	text: json().notNull(),
-	testDisable: tinyint().default(0).notNull(),
+	testDisable: boolean().default(false).notNull(),
 },
 (table) => [
 	primaryKey({ columns: [table.id], name: "Test_id"}),
 ]);
 
 export const user = mysqlTable("User", {
-	id: int().autoincrement().primaryKey().notNull(),
+	id: int().autoincrement().primaryKey(),
 	firstName: varchar({ length: 191 }).notNull(),
 	lastName: varchar({ length: 191 }).notNull(),
 	surName: varchar({ length: 191 }).default('').notNull(),
