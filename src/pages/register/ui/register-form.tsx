@@ -73,7 +73,7 @@ export const RegisterForm: React.FC = ({ }) => {
       testsResult: "[]",
       vkUrl: data.vkUrl,
     });
-
+console.log(result)
     try {
       if (result.success) {
         signIn('email', {
@@ -102,8 +102,8 @@ export const RegisterForm: React.FC = ({ }) => {
             <p className="mt-1 text-sm/6 text-gray-600">
               Зарегистрируетесь для доступа к тестам
             </p>
-            <div className="flex flex-col-reverse justify-center lg:flex-row">
-              <div className="mt-10 w-full lg:w-9/12 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="flex flex-col-reverse justify-center  lg:space-x-11 lg:flex-row">
+              <div className="mt-10 w-full lg:w-10/12 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="first-name"
@@ -125,7 +125,7 @@ export const RegisterForm: React.FC = ({ }) => {
                 </div>
                 <div className="sm:col-span-2">
                   <label
-                    htmlFor="sur-name"
+                    htmlFor="surName"
                     className="block text-sm/6 font-medium text-gray-900"
                   ></label>
                   <div className="mt-2">
@@ -307,10 +307,11 @@ export const RegisterForm: React.FC = ({ }) => {
                     { }
                   </div>
                 </div>
+
                 <div className="sm:col-span-3">
                   <FormField
                       control={form.control}
-                      name="agreement"
+                      name="agreementApplicaiton"
                       render={({ field }) => (
                           <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
                             <FormControl>
@@ -322,10 +323,10 @@ export const RegisterForm: React.FC = ({ }) => {
                             </FormControl>
                             <div className="space-y-1 leading-none">
                               <FormLabel>
-                                Согласие на обработку и передачу персональных данных
+                                Согласие обработку информации
                               </FormLabel>
                               <FormDescription>
-                                Я даю свое согласие на обработку моих персональных данных и принимаю  <Link className='font-bold underline ' href="/agreement">согласие на обработку персональных данных</Link> {" "}
+                                Отправляя данную заявку Вы даете согласие на обработку своих персональных данных {" "}
 
                               </FormDescription>
                             </div>
@@ -333,6 +334,7 @@ export const RegisterForm: React.FC = ({ }) => {
                       )}
                   />
                 </div>
+
                 <div className="sm:col-span-3">
                   <FormField
                       control={form.control}
@@ -359,7 +361,32 @@ export const RegisterForm: React.FC = ({ }) => {
                       )}
                   />
                 </div>
+                <div className="sm:col-span-6">
+                  <FormField
+                      control={form.control}
+                      name="agreement"
+                      render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                            <FormControl>
+                              <Checkbox
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  required
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>
+                                Согласие на обработку и передачу персональных данных
+                              </FormLabel>
+                              <FormDescription>
+                                Я даю свое согласие на обработку моих персональных данных и принимаю  <Link className='font-bold underline ' href="/agreement">согласие на обработку персональных данных</Link> {" "}
 
+                              </FormDescription>
+                            </div>
+                          </FormItem>
+                      )}
+                  />
+                </div>
                 <Button
                   loading={form.formState.isSubmitting}
                   variant={"secondary"}

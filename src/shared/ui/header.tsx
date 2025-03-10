@@ -50,13 +50,14 @@ export const Header: React.FC<PropsWithChildren> = ({ children }) => {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-24 items-center justify-between">
               <div className="flex items-center">
-                <div className="shrink-0">
+                <div className="flex items-center space-x-3 shrink-0">
                   <img
                     onClick={() => router.replace("../")}
                     alt="КВФ"
                     src="../.././logo.jpg"
                     className="size-18 w-32"
                   />
+                  <h2 style={{color:' #8d7750'}} className="text-balance text-sm  font-semibold tracking-tight text-gray-900 sm:text-lg">Агентство социальных инициатив</h2>
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">

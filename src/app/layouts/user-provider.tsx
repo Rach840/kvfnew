@@ -1,7 +1,8 @@
 "use client";
 
+import { User } from "@/src/db/schema";
 import { getUserSession } from "@/src/shared/lib/get-session-server";
-import { User } from "@prisma/client";
+
 import React from "react";
 
 export type ClientSafeUser = {

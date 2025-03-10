@@ -7,12 +7,15 @@ import Skeleton from '@mui/material/Skeleton';
 import NonAuth from "@/src/shared/ui/non-auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {Card} from "@mui/material";
+import {getTeamMember} from "@/src/app/actions";
 
 
 export default function Profile() {
   const router = useRouter();
   const [usersTests, setUsersTests] = useState();
   const [user, setUser] = useState();
+  const [team, setTeam] = useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -20,6 +23,10 @@ export default function Profile() {
       const user = await getUserSession();
       if (user && !user?.emailVerified) {
         router.replace("/verification-request")
+      }
+      if (user.teamMember){
+        const member = await getTeamMember(user.teamMember);
+        setTeam(member)
       }
       if (user) {
         const userTests = JSON.parse(user?.testsResult);
@@ -59,35 +66,54 @@ export default function Profile() {
                 <p className="font-normal text-base leading-7 text-gray-500  max-sm:text-center">
                   Организация {user?.organisation}
                 </p>
+
               </div>
-              <div className=" max-sm:flex-wrap max-sm:justify-center items-center gap-4">
-                <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
-                  Тест пройден: {user?.testPassed ? "Пройден" : "Не пройден"}
-                </p>
-                {/* <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+              <Card className=" max-sm:flex-wrap p-7 flex max-sm:justify-center items-center gap-4">
+                <div className="sm:col-span-2">
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Тест пройден: {user?.testPassed ? "Пройден" : "Не пройден"}
+                  </p>
+                  {/* <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
                   Когда пройден:{" "}
                   {user?.testPassed
                     ? new Date(Number(user.passedDate)).toLocaleString()
                     : "Не пройден"}
                 </p> */}
-                {/* <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                  {/* <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
                   Правильных ответов:{" "}
                   {user?.testPassed ? user.testsResult + " баллов" : "Не пройден"}
                 </p> */}
-                <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
-                  Электронная почта: {user?.email}
-                </p>
-                <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
-                  Специализация:{" "}
-                  {user?.role == "STUDENT"
-                    ? "Студент"
-                    : user.role == "SCHOOLBOY"
-                      ? "Школьник"
-                      : user.role == "SPECIALIST"
-                        ? "Специалист"
-                        : "Администратор"}
-                </p>
-              </div>
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Электронная почта: {user?.email}
+                  </p>
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Команда при создании: {user?.nameTeam}
+                  </p>
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Состоит в команде: {user?.teamMember ? team?.name : 'Не состоит в команде'}
+                  </p>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Страна: {user?.country}
+                  </p>
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Регион: {user?.region}
+                  </p>
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Город: {user?.city}
+                  </p>
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Номер телефона: {user?.phone}
+                  </p>
+                  <p className="font-manrope font-bold text-lg text-gray-900 mb-1 max-sm:text-center">
+                    Ссылка на ВК: <Link className='underline' href={user?.vkUrl}>{user?.vkUrl}</Link>
+                  </p>
+                </div>
+
+
+              </Card>
             </div>
           </div>
           <div>
@@ -105,7 +131,7 @@ export default function Profile() {
                 </div></Link>
               ))
             ) : (
-              <div className="relative container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]"></div>
+              <div className="relative  bg-white container mx-auto flex h-full ring-black/5 max-lg:rounded-t-[2rem] my-6 py-10  shadow ring-1 flex-col overflow-hidden rounded-[calc(theme(borderRadius.lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]"></div>
             )}
           </div>
         </section>

@@ -1,17 +1,17 @@
 
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "@/prisma/prisma-client";
 import { compare } from "bcryptjs";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import EmailProvider from "next-auth/providers/email";
-import { PrismaClient } from "@prisma/client";
 import { createTransport } from "nodemailer"
-
-export const dbClient = new PrismaClient();
+import { db } from "@/src/db";
+import { eq } from "drizzle-orm";
+import {user as userBD, verificationToken} from "@/src/db/schema";
 
 async function sendVerificationRequest(params) {
   const { identifier, url, provider } = params
+  console.log("Sending Verification Request...");
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
   const transport = createTransport({
     host: process.env.EMAIL_SERVER_HOST,
@@ -24,11 +24,8 @@ async function sendVerificationRequest(params) {
 
   })
 
-  const userVerified =  await prisma.user.findFirst({
-    where: {
-      email: identifier,
-    },
-  });
+
+  const [userVerified] = await db.select().from(userBD).where(eq(userBD.email, identifier));
   const result = await transport.sendMail({
     to: identifier,
     from: provider.from,
@@ -75,7 +72,10 @@ async function sendVerificationRequest(params) {
 
 
 export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(dbClient) as AuthOptions['adapter'],
+  adapter: DrizzleAdapter(db,{
+    usersTable: userBD,
+    verificationTokensTable: verificationToken,
+  }),
   providers: [
     EmailProvider({
       server: {
@@ -101,14 +101,8 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
-        const values = {
-          email: credentials.email,
-        };
 
-        const findUser = await prisma.user.findFirst({
-          where: values,
-        });
-
+const [findUser] = await db.select().from(userBD).where(eq( userBD.email, credentials.email));
         if (!findUser) {
           return null;
         }
@@ -149,23 +143,16 @@ export const authOptions: AuthOptions = {
         }
         if (account?.provider === "email") {
           console.log(profile)
-          const userExists = await prisma.user.findFirst({
-            where: {
-              email: user.email,
-            }
-
-          });
+          const [userExists] = await db.select().from(userBD).where(eq(userBD.email,user.email));
+          console.log('sdasd',userExists);
           if (userExists) {
             return true;
           } else {
             return false;
           }
         }
-        const findUser = await prisma.user.findFirst({
-          where: {
-            email: user.email,
-          },
-        });
+
+        const [findUser] = await db.select().from(userBD).where(eq(userBD.email,user.email))
         console.log(findUser)
         return !!findUser;
       } catch (error) {
@@ -180,11 +167,8 @@ export const authOptions: AuthOptions = {
       if (!token.email) {
         return token;
       }
-      const findUser = await prisma.user.findFirst({
-        where: {
-          email: token.email,
-        },
-      });
+
+      const [findUser] = await db.select().from(userBD).where(eq(userBD.email,token.email))
       if (findUser) {
         token.id = findUser.id;
         token.email = findUser.email;

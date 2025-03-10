@@ -1,5 +1,4 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, primaryKey, unique, varchar, json, int, datetime, mysqlEnum, tinyint, boolean } from "drizzle-orm/mysql-core"
-import { sql } from "drizzle-orm"
+import { mysqlTable, primaryKey, unique, varchar, json, int, datetime, mysqlEnum, boolean } from "drizzle-orm/mysql-core"
 
 export const teams = mysqlTable("Teams", {
 	id: varchar({ length: 191 }).primaryKey().notNull(),
@@ -50,7 +49,7 @@ export const user = mysqlTable("User", {
 	password: varchar({ length: 191 }).notNull(),
 	email: varchar({ length: 191 }).notNull(),
 	organisation: varchar({ length: 191 }).notNull(),
-	testPassed: tinyint().default(0).notNull(),
+	testPassed: boolean().default(false).notNull(),
 	passedDate: varchar({ length: 191 }).default('').notNull(),
 	startTest: mysqlEnum(['START','RESULT']).default('START').notNull(),
 	role: mysqlEnum(['USER','ADMIN']).default('USER').notNull(),

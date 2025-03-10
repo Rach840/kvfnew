@@ -17,7 +17,7 @@ export default function Footer() {
 										className="size-18 w-32"
 									/>
 								</div>
-								<h2 className="text-balance text-lg  font-semibold tracking-tight text-gray-900 sm:text-lg">Агентство социальных инициатив</h2>
+								<h2 style={{color:' #8d7750'}}  className="text-balance  text-lg  font-semibold tracking-tight text-gray-900 sm:text-lg">Агентство социальных инициатив</h2>
 							</div>
 
 							<div className="flex space-x-2 my-4 lg:my-auto items-center">

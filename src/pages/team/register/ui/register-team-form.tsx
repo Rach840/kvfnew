@@ -40,7 +40,7 @@ export const RegisterTeamForm: React.FC = ({ }) => {
     const form = useForm<TFormRegisterTeamValues>({
         resolver: zodResolver(RegisterTeamSchema),
         defaultValues: {
-            name: "",
+            nameTeam: "",
             country: "",
             region: "",
             city: "",
@@ -51,27 +51,30 @@ export const RegisterTeamForm: React.FC = ({ }) => {
             captainEmail: "",
             captainFullName: '',
             supervisorFullName: '',
+            vkGroupUrl: '',
         },
     });
-
+    console.log(session);
     const onSubmit = async (data: TFormRegisterTeamValues) => {
-        console.log(data);
+
         try {
             const result = await registerTeam({
-                name: data.name,
+                name: data.nameTeam,
                 country: data.country,
                 region: data.region ? data.region : "",
                 city: data.city,
                 institution: data.institution,
                 supervisorPhone: data.supervisorPhone,
-                supervisorId: session.user?.id,
+                supervisorId: session?.user?.id,
                 captainPhone: data.captainPhone,
                 captainFullName: data.captainFullName,
                 supervisorFullName: data.supervisorFullName,
                 supervisorEmail: data.supervisorEmail,
                 captainEmail: data.captainEmail,
-                vkGroupUrl: data.vkGroupUrl
-            },session.user?.id);
+                vkGroupUrl: data.vkGroupUrl,
+
+                captainId: null
+            }, session?.user?.id);
 
 
             if (result.message){
@@ -290,7 +293,7 @@ if (succes){
                             <div className="sm:col-span-3">
                                 <FormField
                                     control={form.control}
-                                    name="agreement"
+                                    name="agreementSuper"
                                     render={({ field }) => (
                                         <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
                                             <FormControl>
@@ -302,10 +305,10 @@ if (succes){
                                             </FormControl>
                                             <div className="space-y-1 leading-none">
                                                 <FormLabel>
-                                                    Согласие на обработку и передачу персональных данных
+                                                    Согласие на обработку и передачу персональных данных (Руководитель/Администратор)
                                                 </FormLabel>
                                                 <FormDescription>
-                                                    Я даю свое согласие на обработку моих персональных данных и принимаю  <Link className='font-bold underline ' href="/agreement">согласие на обработку персональных данных</Link> {" "}
+                                                    Я, руководитель/администратор команды, даю свое согласие на обработку моих персональных данных и принимаю согласие на обработку персональных данных (см. ниже)
 
                                                 </FormDescription>
                                             </div>
@@ -313,6 +316,59 @@ if (succes){
                                     )}
                                 />
                             </div>
+                            <div className="sm:col-span-3">
+                                <FormField
+                                    control={form.control}
+                                    name="agreementCaptain"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    required
+                                                />
+                                            </FormControl>
+                                            <div className="space-y-1 leading-none">
+                                                <FormLabel>
+                                                    Согласие на обработку и передачу персональных данных (Капитан)
+                                                </FormLabel>
+                                                <FormDescription>
+                                                    Я, капитан команды, даю свое согласие на обработку моих персональных данных и принимаю согласие на обработку персональных данных (см. ниже)
+
+                                                </FormDescription>
+                                            </div>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="sm:col-span-3">
+                                <FormField
+                                    control={form.control}
+                                    name="agreementApplication"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    required
+                                                />
+                                            </FormControl>
+                                            <div className="space-y-1 leading-none">
+                                                <FormLabel>
+                                                    Согласие на отправку персональных данных
+                                                </FormLabel>
+                                                <FormDescription>
+                                                    Отправляя данную заявку Вы даете согласие на обработку своих персональных данных (см. ниже)
+
+                                                </FormDescription>
+                                            </div>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
                             <div className="sm:col-span-3">
                                 <FormField
                                     control={form.control}
@@ -332,6 +388,32 @@ if (succes){
                                                 </FormLabel>
                                                 <FormDescription>
                                                     Я даю свое согласие на на фото и видеосъемку, а также на размещение их на ресурсах АНО АСИ и партнеров {" "}
+
+                                                </FormDescription>
+                                            </div>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="sm:col-span-6">
+                                <FormField
+                                    control={form.control}
+                                    name="agreement"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    required
+                                                />
+                                            </FormControl>
+                                            <div className="space-y-1 leading-none">
+                                                <FormLabel>
+                                                    Согласие на обработку и передачу персональных данных
+                                                </FormLabel>
+                                                <FormDescription>
+                                                    Я даю свое согласие на обработку моих персональных данных и принимаю  <Link className='font-bold underline ' href="/agreement">согласие на обработку персональных данных</Link> {" "}
 
                                                 </FormDescription>
                                             </div>
